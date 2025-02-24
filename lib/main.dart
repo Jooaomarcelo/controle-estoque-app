@@ -1,3 +1,4 @@
+import 'package:controle_estoque_app/pages/auth_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +40,10 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const AuthOrAppPage(),
+      routes: {
+        '/': (ctx) => const AuthOrAppPage(),
+        '/auth': (ctx) => const AuthPage(),
+      },
     );
   }
 }
