@@ -1,3 +1,5 @@
+import 'package:controle_estoque_app/core/services/user_service.dart';
+import 'package:controle_estoque_app/pages/products_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,9 +10,27 @@ class HomePage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Home Page'),
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                UserService().logout();
+              },
+            )
+          ],
         ),
         body: Center(
-          child: Text('Home Page'),
+          child: ElevatedButton(
+              onPressed: () => Navigator.of(context).pushNamed('/products'),
+              child: Row(
+                children: [
+                  Icon(Icons.menu_open_sharp),
+                  Text('Produtos'),
+                ],
+              )),
         ));
   }
 }
