@@ -1,3 +1,4 @@
+import 'package:controle_estoque_app/pages/auth_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -22,10 +23,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromRGBO(60, 78, 105, 1),
+          primary: Color.fromRGBO(60, 78, 105, 1),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromRGBO(60, 78, 105, 1),
+          toolbarHeight: 80,
+        ),
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(60, 78, 105, 1),
+          ),
+        ),
         useMaterial3: true,
       ),
-      home: const AuthOrAppPage(),
+      routes: {
+        '/': (ctx) => const AuthOrAppPage(),
+        '/auth': (ctx) => const AuthPage(),
+      },
     );
   }
 }
