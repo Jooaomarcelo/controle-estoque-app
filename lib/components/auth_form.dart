@@ -54,72 +54,28 @@ class _AuthFormState extends State<AuthForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          height: 530,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  widget.isLogin ? 'Login' : "Cadastro",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                widget.isLogin ? 'Login' : "Cadastro",
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-              Spacer(),
-              if (!widget.isLogin)
-                Text(
-                  'Nome',
-                  textAlign: TextAlign.start,
-                ),
-              if (!widget.isLogin)
-                TextFormField(
-                  key: const ValueKey('name'),
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3.0,
-                          color: Theme.of(context).colorScheme.primary),
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(999),
-                      borderSide: BorderSide(
-                          width: 2.0,
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 30),
-                  ),
-                  onChanged: (name) => _formData.name = name,
-                  validator: (textField) {
-                    final name = textField ?? '';
-
-                    if (name.trim().isEmpty) {
-                      return 'Nome de Usuário não pode ser vazio.';
-                    }
-
-                    if (name.trim().length < 4) {
-                      return 'Nome de Usuário deve ter no mínimo 4 caracteres.';
-                    }
-
-                    return null;
-                  },
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_emailFocusNode);
-                  },
-                ),
-              SizedBox(height: 20),
+            ),
+            SizedBox(height: 50),
+            if (!widget.isLogin)
               Text(
-                'E-mail',
+                'Nome',
                 textAlign: TextAlign.start,
               ),
+            if (!widget.isLogin)
               TextFormField(
-                key: const ValueKey('email'),
-                controller: _emailController,
-                focusNode: _emailFocusNode,
+                key: const ValueKey('name'),
+                controller: _nameController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -135,91 +91,149 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 30),
                 ),
-                onChanged: (email) => _formData.email = email,
+                onChanged: (name) => _formData.name = name,
                 validator: (textField) {
-                  final email = textField ?? '';
+                  final name = textField ?? '';
 
-                  if (email.trim().isEmpty) {
-                    return 'E-mail de Usuário não pode ser vazio.';
+                  if (name.trim().isEmpty) {
+                    return 'Nome de Usuário não pode ser vazio.';
                   }
 
-                  if (!email.contains('@')) {
-                    return 'Email inválido.';
+                  if (name.trim().length < 4) {
+                    return 'Nome de Usuário deve ter no mínimo 4 caracteres.';
                   }
 
                   return null;
                 },
                 onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_passwordFocusNode);
+                  FocusScope.of(context).requestFocus(_emailFocusNode);
                 },
               ),
-              SizedBox(height: 20),
-              Text(
-                'Senha',
-                textAlign: TextAlign.start,
-              ),
-              TextFormField(
-                key: const ValueKey('password'),
-                controller: _passwordController,
-                focusNode: _passwordFocusNode,
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 3.0,
-                        color: Theme.of(context).colorScheme.primary),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(999),
-                    borderSide: BorderSide(
-                        width: 2.0,
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+            SizedBox(height: 20),
+            Text(
+              'E-mail',
+              textAlign: TextAlign.start,
+            ),
+            TextFormField(
+              key: const ValueKey('email'),
+              controller: _emailController,
+              focusNode: _emailFocusNode,
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 3.0, color: Theme.of(context).colorScheme.primary),
+                  borderRadius: BorderRadius.circular(999),
                 ),
-                onChanged: (password) => _formData.password = password,
-                obscureText: true,
-                validator: (textField) {
-                  final password = textField ?? '';
-
-                  if (password.trim().length < 6) {
-                    return 'A senha deve conter no mínimo 6 caractéres.';
-                  }
-
-                  return null;
-                },
-                onFieldSubmitted: (_) => submit(),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(999),
+                  borderSide: BorderSide(
+                      width: 2.0, color: Theme.of(context).colorScheme.primary),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 30),
               ),
-              if (widget.isLogin)
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Esqueceu a senha?',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.grey,
-                    ),
+              onChanged: (email) => _formData.email = email,
+              validator: (textField) {
+                final email = textField ?? '';
+
+                if (email.trim().isEmpty) {
+                  return 'E-mail de Usuário não pode ser vazio.';
+                }
+
+                if (!email.contains('@')) {
+                  return 'Email inválido.';
+                }
+
+                return null;
+              },
+              onFieldSubmitted: (_) {
+                FocusScope.of(context).requestFocus(_passwordFocusNode);
+              },
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Senha',
+              textAlign: TextAlign.start,
+            ),
+            TextFormField(
+              key: const ValueKey('password'),
+              controller: _passwordController,
+              focusNode: _passwordFocusNode,
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 3.0, color: Theme.of(context).colorScheme.primary),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(999),
+                  borderSide: BorderSide(
+                      width: 2.0, color: Theme.of(context).colorScheme.primary),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+              ),
+              onChanged: (password) => _formData.password = password,
+              obscureText: true,
+              validator: (textField) {
+                final password = textField ?? '';
+
+                if (password.trim().length < 6) {
+                  return 'A senha deve conter no mínimo 6 caractéres.';
+                }
+
+                return null;
+              },
+              onFieldSubmitted: (_) => submit(),
+            ),
+            if (widget.isLogin)
+              TextButton(
+                onPressed: () {},
+                child: const Text(
+                  'Esqueceu a senha?',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.grey,
                   ),
                 ),
-              Spacer(),
+              ),
+            SizedBox(height: 50),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: submit,
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                child: widget.isLoading
+                    ? CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    : Text(widget.isLogin ? 'Entrar' : 'Cadastrar'),
+              ),
+            ),
+            SizedBox(height: 25),
+            if (widget.isLogin)
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: submit,
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    '/auth',
+                    arguments: false,
                   ),
-                  child: widget.isLoading
-                      ? CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : Text(widget.isLogin ? 'Entrar' : 'Cadastrar'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                    backgroundColor: Colors.white,
+                    side: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2.0,
+                    ),
+                  ),
+                  child: Text('Cadastrar'),
                 ),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );

@@ -83,10 +83,14 @@ class _AuthPageState extends State<AuthPage> {
           'assets/images/logo-light.svg',
         ),
       ),
-      body: AuthForm(
-        onSubmit: _handleSubmit,
-        isLogin: _isLogin!,
-        isLoading: _isLoading,
+      body: Center(
+        child: SingleChildScrollView(
+          child: AuthForm(
+            onSubmit: _handleSubmit,
+            isLogin: _isLogin!,
+            isLoading: _isLoading,
+          ),
+        ),
       ),
     );
   }
