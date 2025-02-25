@@ -45,11 +45,11 @@ class UserService {
     controller.onCancel = () => subscription.cancel();
   });
 
-  static UserData? get currentUser => _currentUser;
+  UserData? get currentUser => _currentUser;
 
   Stream<UserData?> get userChanges => _userStream;
 
-  Stream<List<UserData>> get users => _usersStream;
+  Stream<List<UserData>> get usersStream => _usersStream;
 
   /*------- Conversão de dados entre Firestore e UserData -------*/
 
@@ -131,5 +131,19 @@ class UserService {
     user.changeUserType(newUserType);
 
     await _saveUserInDatabase(user);
+  }
+
+  Future<UserData?> getUserById(String userId) async {
+    final store = FirebaseFirestore.instance;
+
+    final docRef = store.collection('users').doc(userId);
+
+    final docSnapshot = await docRef.get();
+
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      return _fromFirestore(docSnapshot, null);
+    }
+
+    return null;
   }
 }
