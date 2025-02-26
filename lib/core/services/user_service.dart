@@ -16,7 +16,11 @@ class UserService {
     final authChanges = FirebaseAuth.instance.authStateChanges();
 
     await for (final user in authChanges) {
-      _currentUser = user == null ? null : _toUserData(user);
+      if (user == null) {
+        _currentUser = null;
+      } else {
+        _currentUser = await UserService().getUserById(user.uid);
+      }
 
       controller.add(_currentUser);
     }
