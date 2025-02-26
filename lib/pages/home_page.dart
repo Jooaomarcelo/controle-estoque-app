@@ -22,14 +22,31 @@ class HomePage extends StatelessWidget {
           ],
         ),
         body: Center(
-          child: ElevatedButton(
-              onPressed: () => Navigator.of(context).pushNamed('/products'),
-              child: Row(
-                children: [
-                  Icon(Icons.menu_open_sharp),
-                  Text('Produtos'),
-                ],
-              )),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () => Navigator.of(context).pushNamed('/products'),
+                  child: Row(
+                    children: [
+                      Icon(Icons.menu_open_sharp),
+                      Text('Produtos'),
+                      ],
+                    )
+                  ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pushNamed('/estoque'),
+                child: Row(
+                  children: [
+                    Icon(Icons.add_box_sharp),
+                    Text('Estoque')
+                  
+                  ]
+
+                )
+              )
+            ],
+          ),
         ));
   }
 }

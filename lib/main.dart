@@ -1,4 +1,5 @@
 import 'package:controle_estoque_app/pages/auth_page.dart';
+import 'package:controle_estoque_app/pages/estoque_page.dart';
 import 'package:controle_estoque_app/pages/products_page.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 import 'package:controle_estoque_app/pages/auth_or_app_page.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +48,8 @@ class MyApp extends StatelessWidget {
         '/': (ctx) => const AuthOrAppPage(),
         '/auth': (ctx) => const AuthPage(),
         '/products': (ctx) => const ProductsPage(),
+        '/estoque': (ctx) =>  EstoquePage(),
+        
       },
     );
   }

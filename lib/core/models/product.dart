@@ -18,4 +18,6 @@ class Product {
     required this.lastEdited,
     required this.userIdLastUpdated,
   });
+
+  
 }
