@@ -18,23 +18,16 @@ class UserData {
   final String email;
   final String name;
   String imageUrl;
-  TipoUsuario _tipoUsuario;
+  final TipoUsuario _tipoUsuario = TipoUsuario.leitor;
 
   UserData({
     required this.id,
     required this.name,
     required this.email,
     this.imageUrl = '',
-    TipoUsuario tipoUsuario = TipoUsuario.leitor,
-  }) : _tipoUsuario = tipoUsuario;
+  });
 
   TipoUsuario get tipoUsuario => _tipoUsuario;
 
-  bool get isAdministrador => _tipoUsuario == TipoUsuario.administrador;
-
-  bool get isEstoquista => _tipoUsuario == TipoUsuario.estoquista;
-
-  void changeUserType(TipoUsuario tipoUsuario) {
-    _tipoUsuario = tipoUsuario;
-  }
+  bool get isLeitor => _tipoUsuario == TipoUsuario.leitor;
 }
