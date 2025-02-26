@@ -44,6 +44,10 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Color.fromRGBO(60, 78, 105, 1),
           ),
+          bodyMedium: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+          ),
         ),
         useMaterial3: true,
       ),
