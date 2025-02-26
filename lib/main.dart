@@ -44,6 +44,15 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Color.fromRGBO(60, 78, 105, 1),
           ),
+          labelMedium: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(60, 78, 105, 1),
+          ),
+          bodySmall: TextStyle(
+            fontSize: 16,
+            color: Colors.black54,
+          ),
           bodyMedium: TextStyle(
             fontSize: 16,
             color: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:controle_estoque_app/components/product_form.dart';
 import 'package:controle_estoque_app/core/models/product.dart';
 import 'package:controle_estoque_app/core/models/product_form_data.dart';
 import 'package:controle_estoque_app/core/services/product/product_service.dart';
@@ -19,48 +20,26 @@ class ProductFormPage extends StatefulWidget {
 class _ProductFormPageState extends State<ProductFormPage> {
   bool _isLoading = false;
 
-  final _fomrKey = GlobalKey<FormState>();
-
-  late ProductFormData _formData;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _formData = widget.product != null
-        ? ProductFormData(
-            name: widget.product!.name,
-            brand: widget.product!.brand,
-            description: widget.product!.description ?? '',
-            type: widget.product!.type,
-          )
-        : ProductFormData();
-  }
-
-  Future<void> _submitForm() async {
-    final isValid = _fomrKey.currentState!.validate();
-
-    if (!isValid) return;
-
-    final currentUser = UserService().currentUser;
-
-    if (currentUser == null) {
-      // Handle error
-      return;
-    }
-
+  Future<void> _handleSubmit(ProductFormData formData) async {
     try {
       setState(() => _isLoading = true);
+
+      final currentUser = UserService().currentUser;
+
+      if (currentUser == null) {
+        // Handle error
+        return;
+      }
 
       if (widget.product == null) {
         await ProductService().addProduct(
           currentUser,
-          _formData,
+          formData,
         );
       } else {
         await ProductService().editProduct(
           currentUser,
-          _formData,
+          formData,
           widget.product!,
         );
       }
@@ -78,84 +57,27 @@ class _ProductFormPageState extends State<ProductFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Formulário de Produto'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _fomrKey,
-          child: Column(
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: Text(
+      //     widget.product == null ? 'Adicionar Produto' : 'Editar Produto',
+      //   ),
+      // ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Stack(
             children: [
-              TextFormField(
-                key: ValueKey('name'),
-                initialValue: _formData.name,
-                validator: (value) {
-                  final name = value ?? '';
-
-                  if (name.trim().isEmpty) {
-                    return 'Nome é obrigatório';
-                  }
-
-                  return null;
-                },
-                onChanged: (value) => _formData.name = value,
-                decoration: const InputDecoration(labelText: 'Nome*'),
+              ProductForm(
+                product: widget.product,
+                isLoading: _isLoading,
+                onSubmit: _handleSubmit,
               ),
-              TextFormField(
-                key: ValueKey('description'),
-                initialValue: _formData.description,
-                onChanged: (value) => _formData.description = value,
-                decoration: const InputDecoration(labelText: 'Descrição'),
-              ),
-              TextFormField(
-                key: ValueKey('brand'),
-                initialValue: _formData.brand,
-                validator: (value) {
-                  final brand = value ?? '';
-
-                  if (brand.trim().isEmpty) {
-                    return 'Marca é obrigatório';
-                  }
-
-                  return null;
-                },
-                onChanged: (value) => _formData.brand = value,
-                decoration: const InputDecoration(labelText: 'Marca*'),
-              ),
-              TextFormField(
-                key: ValueKey('type'),
-                initialValue: _formData.type,
-                validator: (value) {
-                  final type = value ?? '';
-
-                  if (type.trim().isEmpty) {
-                    return 'Tipo é obrigatório';
-                  }
-
-                  return null;
-                },
-                onChanged: (value) => _formData.type = value,
-                decoration: const InputDecoration(labelText: 'Tipo*'),
-              ),
-              SizedBox(height: 50),
-              SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: _submitForm,
-                  child: _isLoading
-                      ? CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : Text(
-                          widget.product == null ? 'Adicionar' : 'Editar',
-                        ),
+              Positioned(
+                top: 10,
+                left: 10,
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(Icons.arrow_back),
                 ),
               ),
             ],
