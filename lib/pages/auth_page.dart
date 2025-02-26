@@ -19,7 +19,12 @@ class _AuthPageState extends State<AuthPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _isLogin = ModalRoute.of(context)?.settings.arguments as bool?;
+    final newIsLogin = ModalRoute.of(context)?.settings.arguments as bool?;
+    if (_isLogin != newIsLogin) {
+      setState(() {
+        _isLogin = newIsLogin;
+      });
+    }
   }
 
   void _showErrorDialog(String msg) {
@@ -44,11 +49,18 @@ class _AuthPageState extends State<AuthPage> {
         if (mounted) Navigator.of(context).popUntil(ModalRoute.withName('/'));
       } else {
         await UserService().signup(
+          formData.name,
           formData.email,
           formData.password,
         );
 
-        if (mounted) Navigator.of(context).popUntil(ModalRoute.withName('/'));
+        if (mounted) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            '/auth',
+            ModalRoute.withName('/'),
+            arguments: true,
+          );
+        }
       }
     } catch (error) {
       _showErrorDialog('Email ou senha inválida.');

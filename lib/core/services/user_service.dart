@@ -5,13 +5,12 @@ import 'package:controle_estoque_app/core/models/user_data.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class UserService {
-  /*------- Stream de usuário logado e de todos os usuários cadastrados -------*/
+  /*------- Stream de alteração no usuário logado -------*/
 
   static UserData? _currentUser;
-
-  static List<UserData> _users = [];
 
   static final _userStream = Stream<UserData?>.multi((controller) async {
     final authChanges = FirebaseAuth.instance.authStateChanges();
@@ -23,33 +22,9 @@ class UserService {
     }
   });
 
-  static final _usersStream = Stream<List<UserData>>.multi((controller) async {
-    if (_users.isNotEmpty) {
-      controller.add(_users);
-    }
-
-    final store = FirebaseFirestore.instance;
-
-    final snapshot = store
-        .collection('users')
-        .withConverter(fromFirestore: _fromFirestore, toFirestore: _toFirestore)
-        .orderBy('email', descending: false)
-        .snapshots();
-
-    final subscription = snapshot.listen((snap) {
-      _users = snap.docs.map((doc) => doc.data()).toList();
-
-      controller.add(_users);
-    });
-
-    controller.onCancel = () => subscription.cancel();
-  });
-
   UserData? get currentUser => _currentUser;
 
   Stream<UserData?> get userChanges => _userStream;
-
-  Stream<List<UserData>> get usersStream => _usersStream;
 
   /*------- Conversão de dados entre Firestore e UserData -------*/
 
@@ -61,32 +36,43 @@ class UserService {
 
     return UserData(
       id: doc.id,
+      name: data?['name'],
       email: data?['email'],
       tipoUsuario: TipoUsuario.values.firstWhere(
         (e) => e.name == data?['tipoUsuario'],
       ),
+      imageUrl: data?['imagemUrl'],
     );
   }
 
   static Map<String, dynamic> _toFirestore(UserData user, SetOptions? options) {
     return {
+      'nome': user.name,
       'email': user.email,
       'tipoUsuario': user.tipoUsuario.name,
+      'imagemUrl': user.imageUrl,
     };
   }
 
-  // Método privado que converte um objeto User em UserData
+  /*------- Conversão de um objeto User em UserData -------*/
   static UserData _toUserData(User user) {
     return UserData(
       id: user.uid,
+      name: user.displayName ?? user.email!.split('@')[0],
       email: user.email!,
+      imageUrl: user.photoURL ?? '', // Adicionar imagem padrão
     );
   }
 
   /*------- Criação de usuário, login e logout -------*/
 
-  Future<void> signup(String email, String password) async {
-    final auth = FirebaseAuth.instance;
+  Future<void> signup(String name, String email, String password) async {
+    final signup = await Firebase.initializeApp(
+      name: 'userSignup',
+      options: Firebase.app().options,
+    );
+
+    final auth = FirebaseAuth.instanceFor(app: signup);
 
     // Criando credenciais de usuário
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
@@ -95,8 +81,13 @@ class UserService {
     );
 
     if (userCredential.user != null) {
+      // Atualizando nome do usuário
+      await userCredential.user?.updateDisplayName(name);
+
       // Salvando usuário no banco de dados
       await _saveUserInDatabase(_toUserData(userCredential.user!));
+
+      await signup.delete();
     }
   }
 
@@ -116,15 +107,10 @@ class UserService {
   Future<void> _saveUserInDatabase(UserData user) async {
     final store = FirebaseFirestore.instance;
 
-    final docRef = store.collection('users').doc(user.id);
+    final docRef = store.collection('users').doc(user.id).withConverter(
+        fromFirestore: _fromFirestore, toFirestore: _toFirestore);
 
-    await docRef.set(
-      {
-        'email': user.email,
-        'tipoUsuario': user.tipoUsuario.name,
-      },
-      SetOptions(merge: true),
-    );
+    await docRef.set(user);
   }
 
   Future<void> editUserType(UserData user, TipoUsuario newUserType) async {

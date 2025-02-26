@@ -16,11 +16,15 @@ extension TipoUsuarioExtension on TipoUsuario {
 class UserData {
   final String id;
   final String email;
+  final String name;
+  String imageUrl;
   TipoUsuario _tipoUsuario;
 
   UserData({
     required this.id,
+    required this.name,
     required this.email,
+    this.imageUrl = '',
     TipoUsuario tipoUsuario = TipoUsuario.leitor,
   }) : _tipoUsuario = tipoUsuario;
 
