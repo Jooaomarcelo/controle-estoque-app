@@ -24,12 +24,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'Poppins',
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color.fromRGBO(60, 78, 105, 1),
           primary: Color.fromRGBO(60, 78, 105, 1),
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color.fromRGBO(60, 78, 105, 1),
+          foregroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Poppins',
+          ),
           toolbarHeight: 80,
         ),
         textTheme: const TextTheme(
