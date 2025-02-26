@@ -1,12 +1,39 @@
+import 'package:controle_estoque_app/core/models/product.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
+import 'package:controle_estoque_app/core/services/product/product_firebase_service.dart';
+import 'package:controle_estoque_app/core/services/user_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart';
 
-class EstoquePage extends StatelessWidget {
-  final EstoqueFirebaseService _estoqueService = EstoqueFirebaseService();
 
-  EstoquePage({Key? key}) : super(key: key);
+class EstoquePage extends StatefulWidget {
+  final EstoqueFirebaseService _estoqueService = EstoqueFirebaseService();
+  final ProductFirebaseService _produtoService = ProductFirebaseService();
+  
+  
+  
+  @override
+  _EstoquePageState createState() => _EstoquePageState();
+}
+
+class _EstoquePageState extends State<EstoquePage> {
+  List<Product> _produtos = [];
+ 
+  @override
+  void initState() {
+    super.initState();
+    _carregarProdutos();
+  }
+
+  // Carregar os produtos
+  Future<void> _carregarProdutos() async {
+    final produtos = await widget._produtoService.buscarProdutos();
+    setState(() {
+      _produtos = produtos;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +42,7 @@ class EstoquePage extends StatelessWidget {
         title: Text("Gerenciar Estoque"),
       ),
       body: StreamBuilder<List<Estoque>>(
-        stream: _estoqueService.estoqueStream(),
+        stream: widget._estoqueService.estoqueStream(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -31,11 +58,16 @@ class EstoquePage extends StatelessWidget {
             itemCount: estoques.length,
             itemBuilder: (context, index) {
               final estoque = estoques[index];
+              // Encontrar o nome do produto pelo idProduto
+              final produto = _produtos.firstWhere(
+                (produto) => produto.id == estoque.idProduto,
+                orElse: () => Product(id: '', name: 'Produto não encontrado',type: '',brand: '',createdAt: DateTime(0,0,0),lastEdited: DateTime(0,0,0) ,userIdLastUpdated: ''),
+              );
 
               return Card(
                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: ListTile(
-                  title: Text("Produto: ${estoque.idProduto}"),
+                  title: Text("Produto: ${produto.name}"), // Exibindo o nome do produto
                   subtitle: Text("Lote: ${estoque.lote} | Quantidade: ${estoque.quantidade}"),
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) {
@@ -77,6 +109,8 @@ class EstoquePage extends StatelessWidget {
 
   void _exibirDialogoBaixa(BuildContext context, Estoque estoque) {
     final TextEditingController quantidadeController = TextEditingController();
+    final userId = UserService().currentUser?.id;
+
 
     showDialog(
       context: context,
@@ -104,9 +138,13 @@ class EstoquePage extends StatelessWidget {
               child: Text("Confirmar"),
               onPressed: () async {
                 int quantidade = int.tryParse(quantidadeController.text) ?? 0;
-                if (quantidade > 0) {
-                  await _estoqueService.darBaixa(estoque.id, quantidade);
+                if (quantidade > 0 && userId != null) {
+                  await widget._estoqueService.darBaixa(estoque.id, quantidade,userId!);
                   Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Erro: Quantidade inválida ou usuário não identificado.'))
+                  );
                 }
               },
             ),
