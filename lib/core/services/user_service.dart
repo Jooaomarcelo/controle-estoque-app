@@ -40,7 +40,7 @@ class UserService {
 
     return UserData(
       id: doc.id,
-      name: data?['name'],
+      name: data?['nome'],
       email: data?['email'],
       tipoUsuario: TipoUsuario.values.firstWhere(
         (e) => e.name == data?['tipoUsuario'],
