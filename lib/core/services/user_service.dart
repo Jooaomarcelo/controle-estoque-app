@@ -113,12 +113,6 @@ class UserService {
     await docRef.set(user);
   }
 
-  Future<void> editUserType(UserData user, TipoUsuario newUserType) async {
-    user.changeUserType(newUserType);
-
-    await _saveUserInDatabase(user);
-  }
-
   Future<UserData?> getUserById(String userId) async {
     final store = FirebaseFirestore.instance;
 

@@ -18,7 +18,7 @@ class UserData {
   final String email;
   final String name;
   String imageUrl;
-  TipoUsuario _tipoUsuario;
+  final TipoUsuario _tipoUsuario;
 
   UserData({
     required this.id,
@@ -30,11 +30,5 @@ class UserData {
 
   TipoUsuario get tipoUsuario => _tipoUsuario;
 
-  bool get isAdministrador => _tipoUsuario == TipoUsuario.administrador;
-
-  bool get isEstoquista => _tipoUsuario == TipoUsuario.estoquista;
-
-  void changeUserType(TipoUsuario tipoUsuario) {
-    _tipoUsuario = tipoUsuario;
-  }
+  bool get isLeitor => _tipoUsuario == TipoUsuario.leitor;
 }
