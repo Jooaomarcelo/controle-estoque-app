@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 
 class SearchProductBar extends StatelessWidget {
-  const SearchProductBar({super.key});
+  final void Function(String) onSearch;
+
+  const SearchProductBar({
+    required this.onSearch,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onSearch,
       decoration: InputDecoration(
         fillColor: Theme.of(context).colorScheme.primary.withAlpha(25),
         filled: true,
-        suffixIcon: Icon(Icons.search),
-        label: Center(child: Text('Pesquisar por produto')),
-        // floatingLabelBehavior: FloatingLabelBehavior.never,
+        suffixIcon: IconButton(
+          onPressed: () => FocusScope.of(context).unfocus(),
+          icon: const Icon(Icons.search),
+        ),
+        label: Center(child: Text('Pesquisar produto')),
         contentPadding: EdgeInsets.symmetric(
           vertical: 5,
           horizontal: 25,
