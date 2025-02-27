@@ -60,16 +60,26 @@ class ProductItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Imagem do produto
-            Container(
-              width: 60,
-              height: 60,
-              padding: const EdgeInsets.all(7),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
+            if (product.image!.isNotEmpty)
+              ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-              ),
-              child: Image.asset('assets/images/default-light.png'),
-            ),
+                child: Image.network(
+                  product.image!,
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                ),
+              )
+            else
+              Container(
+                  width: 60,
+                  height: 60,
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Image.asset('assets/images/default-light.png')),
 
             const SizedBox(width: 20),
 

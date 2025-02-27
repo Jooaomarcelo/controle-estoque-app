@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ImagePickerWidget extends StatefulWidget {
   final void Function(File) onImagePicked;
-  final File? image;
+  final String? image;
 
   const ImagePickerWidget({
     required this.onImagePicked,
@@ -19,13 +19,6 @@ class ImagePickerWidget extends StatefulWidget {
 
 class _ImagePickerState extends State<ImagePickerWidget> {
   File? _image;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _image = widget.image;
-  }
 
   void _pickImage() async {
     final picker = ImagePicker();
@@ -51,14 +44,26 @@ class _ImagePickerState extends State<ImagePickerWidget> {
       children: [
         Align(
           alignment: Alignment.center,
-          child: _image == null
+          child: _image == null && widget.image == ''
               ? Image.asset(
                   'assets/images/default-dark.png',
                   width: 90,
                 )
-              : Image.file(
-                  _image!,
-                  width: 90,
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: _image != null
+                      ? Image.file(
+                          _image!,
+                          width: 90,
+                          height: 90,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          widget.image!,
+                          width: 90,
+                          height: 90,
+                          fit: BoxFit.cover,
+                        ),
                 ),
         ),
         SizedBox(height: 5),

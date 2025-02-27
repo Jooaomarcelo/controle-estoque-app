@@ -40,8 +40,6 @@ class ProductFirebaseService implements ProductService {
     // Upload da imagem do produto
     final imageName = '${formData.name.trim().replaceAll(' ', '_')}.jpg';
 
-    print('imageName: $imageName');
-
     final imageUrl = await _uploadProductImage(formData.image, imageName);
 
     final product = Product(
@@ -75,7 +73,6 @@ class ProductFirebaseService implements ProductService {
 
     final imageUrl = await _uploadProductImage(formData.image, imageName);
 
-    print('imageName: $imageName');
     final editedProduct = Product(
       id: '',
       name: formData.name,
