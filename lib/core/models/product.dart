@@ -1,12 +1,10 @@
-import 'dart:io';
-
 class Product {
   final String id;
   final String name;
   final String type;
   final String brand;
   String? description;
-  File? image;
+  String? image;
   final DateTime createdAt;
   final DateTime lastEdited;
   final String userIdLastUpdated;
