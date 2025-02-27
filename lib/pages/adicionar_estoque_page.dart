@@ -25,6 +25,8 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
   List<Product> _produtos = [];
   String? _produtoSelecionado; // ID do produto selecionado
 
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +45,7 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
     final produtos = await _produtoService.buscarProdutos();
     setState(() {
       _produtos = produtos;
+      _isLoading = false;
     });
   }
 
@@ -88,6 +91,20 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
     }
   }
 
+  Future<void> _selectDataValidade() async {
+    final DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (selectedDate != null) {
+      setState(() {
+        _dataValidadeController.text = selectedDate.toIso8601String().split('T').first;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,39 +117,47 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
           key: _formKey,
           child: Column(
             children: [
-              // Dropdown para selecionar um produto existente
-              DropdownButtonFormField<String>(
-                value: _produtoSelecionado,
-                onChanged: (value) {
-                  setState(() {
-                    _produtoSelecionado = value;
-                  });
-                },
-                items: _produtos.map((produto) {
-                  return DropdownMenuItem(
-                    value: produto.id,
-                    child: Text(produto.name),
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: "Selecione um Produto"),
-                validator: (value) => value == null ? "Selecione um produto" : null,
-              ),
+              // Carregamento dos produtos com indicador de progresso
+              if (_isLoading)
+                Center(child: CircularProgressIndicator())
+              else
+                DropdownButtonFormField<String>(
+                  value: _produtoSelecionado,
+                  onChanged: (value) {
+                    setState(() {
+                      _produtoSelecionado = value;
+                    });
+                  },
+                  items: _produtos.map((produto) {
+                    return DropdownMenuItem(
+                      value: produto.id,
+                      child: Text(produto.name),
+                    );
+                  }).toList(),
+                  decoration: InputDecoration(labelText: "Selecione um Produto"),
+                  validator: (value) => value == null ? "Selecione um produto" : null,
+                ),
 
+              // Lote
               TextFormField(
                 controller: _loteController,
                 decoration: InputDecoration(labelText: "Lote"),
                 keyboardType: TextInputType.number,
                 validator: (value) => value!.isEmpty ? "Campo obrigatório" : null,
               ),
+              // Quantidade
               TextFormField(
                 controller: _quantidadeController,
                 decoration: InputDecoration(labelText: "Quantidade"),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? "Campo obrigatório" : null,
+                validator: (value) => value!.isEmpty || int.tryParse(value) == null || int.parse(value) <= 0 ? "Quantidade inválida" : null,
               ),
+              // Data de Validade com DatePicker
               TextFormField(
                 controller: _dataValidadeController,
                 decoration: InputDecoration(labelText: "Data de Validade (YYYY-MM-DD)"),
+                readOnly: true,
+                onTap: _selectDataValidade,
                 validator: (value) => value!.isEmpty ? "Campo obrigatório" : null,
               ),
               SizedBox(height: 20),

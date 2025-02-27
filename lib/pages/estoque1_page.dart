@@ -1,12 +1,14 @@
 import 'dart:async';
 
-import 'package:controle_estoque_app/components/new_estoque.dart';
+import 'package:controle_estoque_app/components/estoque_item.dart';
+import 'package:controle_estoque_app/components/new_estoque_button.dart';
 import 'package:controle_estoque_app/components/search_product_bar_estoque.dart';
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
 import 'package:controle_estoque_app/core/services/product/product_firebase_service.dart';
-import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart' show AdicionarEstoquePage;
 import 'package:flutter/material.dart';
+
+
 
 class EstoquePage1 extends StatefulWidget {
   const EstoquePage1({Key? key}) : super(key: key);
@@ -14,6 +16,7 @@ class EstoquePage1 extends StatefulWidget {
   @override
   State<EstoquePage1> createState() => _EstoquePage1State();
 }
+
 class _EstoquePage1State extends State<EstoquePage1> {
   final EstoqueFirebaseService _estoqueService = EstoqueFirebaseService();
   final ProductFirebaseService _productService = ProductFirebaseService();
@@ -49,7 +52,15 @@ class _EstoquePage1State extends State<EstoquePage1> {
           children: [
             Image.asset('assets/images/estoque.png', height: 30),
             const SizedBox(width: 15),
-            const Text("Estoque"),
+            const Text(
+              'Estoque',
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+                fontSize: 24,
+                )
+              ),
           ],
         ),
       ),
@@ -88,16 +99,11 @@ class _EstoquePage1State extends State<EstoquePage1> {
                       itemCount: estoquesFiltrados.length,
                       itemBuilder: (context, index) {
                         final estoque = estoquesFiltrados[index];
-                        final nomeProduto =
-                            _productNames[estoque.idProduto] ?? "Produto desconhecido";
-                        return Card(
-                          child: ListTile(
-                            title: Text(nomeProduto),
-                            subtitle: Text(
-                              "Lote: ${estoque.lote}, Quantidade: ${estoque.quantidade}",
-                            ),
-                          ),
+                        return EstoqueItem(
+                          estoque:estoque,
+                          nomeProduto:_productNames[estoque.idProduto] ?? "Produto desconhecido",
                         );
+                        
                       },
                     ),
                   ),
@@ -105,19 +111,12 @@ class _EstoquePage1State extends State<EstoquePage1> {
               },
             ),
           ),
+          NewEstoqueButtton(),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AdicionarEstoquePage(),
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
+      
+        
+     
     );
   }
 }
