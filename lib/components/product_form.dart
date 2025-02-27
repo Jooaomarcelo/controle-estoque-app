@@ -74,7 +74,7 @@ class _ProductFormState extends State<ProductForm> {
       validator: (value) {
         final text = value ?? '';
 
-        if (text.trim().isEmpty) {
+        if (text.trim().isEmpty && field != 'description') {
           return 'Campo obrigatório';
         }
 
