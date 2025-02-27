@@ -7,8 +7,19 @@ import 'package:controle_estoque_app/components/product_item.dart';
 
 import 'package:flutter/material.dart';
 
-class ProductsPage extends StatelessWidget {
+class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
+
+  @override
+  State<ProductsPage> createState() => _ProductsPageState();
+}
+
+class _ProductsPageState extends State<ProductsPage> {
+  String _search = '';
+
+  void _handleSearch(String value) {
+    setState(() => _search = value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +42,7 @@ class ProductsPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
           child: Column(
             children: [
-              SearchProductBar(),
+              SearchProductBar(onSearch: _handleSearch),
               const SizedBox(height: 15),
               StreamBuilder(
                 stream: ProductService().productsStream(),
@@ -54,7 +65,15 @@ class ProductsPage extends StatelessWidget {
                       itemBuilder: (ctx, i) {
                         final product = products[i];
 
-                        return ProductItem(product);
+                        if (_search.isEmpty) {
+                          return ProductItem(product);
+                        } else if (product.name
+                            .toLowerCase()
+                            .contains(_search.trim().toLowerCase())) {
+                          return ProductItem(product);
+                        } else {
+                          return const SizedBox.shrink();
+                        }
                       },
                     );
                   }
