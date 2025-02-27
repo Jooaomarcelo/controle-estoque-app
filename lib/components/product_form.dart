@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:controle_estoque_app/components/image_picker_widget.dart';
 import 'package:controle_estoque_app/core/models/product.dart';
 import 'package:controle_estoque_app/core/models/product_form_data.dart';
 import 'package:controle_estoque_app/core/services/user_service.dart';
@@ -103,6 +106,10 @@ class _ProductFormState extends State<ProductForm> {
     );
   }
 
+  void _handleImagePick(File image) {
+    // _formData.image = image;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -112,30 +119,8 @@ class _ProductFormState extends State<ProductForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets/images/default-dark.png',
-              ),
-            ),
-            SizedBox(height: 5),
-            InkWell(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.add),
-                  const SizedBox(width: 5),
-                  Text(
-                    'Adicionar imagem',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
+            ImagePickerWidget(
+              onImagePicked: _handleImagePick,
             ),
             SizedBox(height: 15),
             Text(
