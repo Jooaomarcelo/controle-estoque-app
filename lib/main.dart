@@ -55,7 +55,6 @@ class MyApp extends StatelessWidget {
           ),
           bodyMedium: TextStyle(
             fontSize: 16,
-            color: Colors.white,
           ),
         ),
         useMaterial3: true,

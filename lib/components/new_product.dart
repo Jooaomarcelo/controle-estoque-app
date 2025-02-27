@@ -36,7 +36,9 @@ class NewProduct extends StatelessWidget {
             const SizedBox(width: 5),
             Text(
               'Cadastrar Produto',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Colors.white,
+                  ),
             ),
           ],
         ),
