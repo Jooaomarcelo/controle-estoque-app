@@ -1,11 +1,12 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+
 import 'package:controle_estoque_app/core/models/product.dart';
 import 'package:controle_estoque_app/core/services/product/product_service.dart';
 
 import 'package:controle_estoque_app/components/search_product_bar.dart';
 import 'package:controle_estoque_app/components/new_product.dart';
 import 'package:controle_estoque_app/components/product_item.dart';
-
-import 'package:flutter/material.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -15,10 +16,21 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
+  Timer? _timer;
+  final ValueNotifier<bool> _isSearching = ValueNotifier(false);
   String _search = '';
 
   void _handleSearch(String value) {
-    setState(() => _search = value);
+    _isSearching.value = true;
+
+    if (_timer?.isActive ?? false) _timer?.cancel();
+
+    _timer = Timer(const Duration(milliseconds: 1000), () {
+      setState(() {
+        _isSearching.value = false;
+        _search = value;
+      });
+    });
   }
 
   @override
@@ -37,14 +49,25 @@ class _ProductsPageState extends State<ProductsPage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-          child: Column(
-            children: [
-              SearchProductBar(onSearch: _handleSearch),
-              const SizedBox(height: 15),
-              StreamBuilder(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+        child: Column(
+          children: [
+            SearchProductBar(onSearch: _handleSearch),
+            const SizedBox(height: 7.5),
+            ValueListenableBuilder<bool>(
+              valueListenable: _isSearching,
+              builder: (_, isSearching, __) {
+                if (isSearching) {
+                  return const LinearProgressIndicator();
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+            SizedBox(height: 7.5),
+            Expanded(
+              child: StreamBuilder(
                 stream: ProductService().productsStream(),
                 builder: (ctx, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -59,8 +82,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     final products = snapshot.data as List<Product>;
 
                     return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.only(bottom: 100),
                       itemCount: products.length,
                       itemBuilder: (ctx, i) {
                         final product = products[i];
@@ -79,9 +101,8 @@ class _ProductsPageState extends State<ProductsPage> {
                   }
                 },
               ),
-              const SizedBox(height: 100),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
