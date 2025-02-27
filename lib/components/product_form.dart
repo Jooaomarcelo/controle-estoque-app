@@ -38,6 +38,7 @@ class _ProductFormState extends State<ProductForm> {
             name: widget.product!.name,
             brand: widget.product!.brand,
             description: widget.product!.description ?? '',
+            image: widget.product!.image,
             type: widget.product!.type,
           )
         : ProductFormData();
@@ -107,7 +108,7 @@ class _ProductFormState extends State<ProductForm> {
   }
 
   void _handleImagePick(File image) {
-    // _formData.image = image;
+    _formData.image = image;
   }
 
   @override
@@ -121,6 +122,7 @@ class _ProductFormState extends State<ProductForm> {
           children: [
             ImagePickerWidget(
               onImagePicked: _handleImagePick,
+              image: _formData.image,
             ),
             SizedBox(height: 15),
             Text(

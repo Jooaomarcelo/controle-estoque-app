@@ -89,7 +89,7 @@ class _ProductsPageState extends State<ProductsPage> {
                         .toList();
 
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Provider.of<UserService>(context)
+                      Provider.of<UserService>(context, listen: false)
                           .getUsersByProductsUsersIds(userIds);
                     });
 
