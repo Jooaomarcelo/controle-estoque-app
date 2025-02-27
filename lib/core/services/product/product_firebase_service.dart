@@ -53,7 +53,7 @@ class ProductFirebaseService implements ProductService {
       type: formData.type,
       brand: formData.brand,
       description: formData.description,
-      createdAt: DateTime.now(),
+      createdAt: product.createdAt,
       lastEdited: DateTime.now(),
       userIdLastUpdated: user.id,
     );
