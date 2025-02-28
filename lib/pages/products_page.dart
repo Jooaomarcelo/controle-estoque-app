@@ -18,6 +18,8 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
+  final _isLeitor = UserService().currentUser!.isLeitor;
+
   Timer? _timer;
   final ValueNotifier<bool> _isSearching = ValueNotifier(false);
   String _search = '';
@@ -94,7 +96,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     });
 
                     return ListView.builder(
-                      padding: EdgeInsets.only(bottom: 100),
+                      padding: EdgeInsets.only(bottom: !_isLeitor ? 100 : 0),
                       itemCount: products.length,
                       itemBuilder: (ctx, i) {
                         final product = products[i];
@@ -118,8 +120,7 @@ class _ProductsPageState extends State<ProductsPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton:
-          UserService().currentUser!.isLeitor ? null : const NewProduct(),
+      floatingActionButton: _isLeitor ? null : const NewProduct(),
     );
   }
 }
