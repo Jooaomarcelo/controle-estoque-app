@@ -1,5 +1,6 @@
 import 'package:controle_estoque_app/core/models/product.dart';
 import 'package:controle_estoque_app/core/services/user_service.dart';
+import 'package:controle_estoque_app/pages/product_detail_page.dart';
 import 'package:controle_estoque_app/pages/product_form_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -46,85 +47,96 @@ class ProductItem extends StatelessWidget {
       ));
     }
 
-    return Card(
-      color: Theme.of(context).colorScheme.primary.withAlpha(25),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.primary,
-          width: 2,
+    return InkWell(
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => ProductDetailPage(product),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(
-          15,
-          10,
-          0,
-          10,
+      child: Card(
+        color: Theme.of(context).colorScheme.primary.withAlpha(25),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2,
+          ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Imagem do produto
-            if (product.image!.isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  product.image!,
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                ),
-              )
-            else
-              Container(
-                  width: 60,
-                  height: 60,
-                  padding: const EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            15,
+            10,
+            0,
+            10,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Imagem do produto
+              if (product.image!.isNotEmpty)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    product.image!,
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
                   ),
-                  child: Image.asset('assets/images/default-light.png')),
-
-            const SizedBox(width: 20),
-
-            // Informações do produto
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getProductColumn({
-                    'Nome': product.name,
-                    'Tipo': product.type,
-                  }),
-                  getProductColumn({
-                    'Marca': product.brand,
-                    'Data de Cadastro':
-                        DateFormat('dd/MM/yyyy').format(product.createdAt),
-                  }),
-                ],
-              ),
-            ),
-
-            const SizedBox(width: 20),
-
-            // Botões de ação
-            IconButton(
-              icon: Icon(
-                isLeitor ? Icons.remove_red_eye : Icons.edit,
-              ),
-              onPressed: () => isLeitor
-                  ? null
-                  : Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => ProductFormPage(product: product),
-                      ),
+                )
+              else
+                Container(
+                    width: 60,
+                    height: 60,
+                    padding: const EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-            ),
-          ],
+                    child: Image.asset('assets/images/default-light.png')),
+
+              const SizedBox(width: 20),
+
+              // Informações do produto
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getProductColumn({
+                      'Nome': product.name,
+                      'Tipo': product.type,
+                    }),
+                    getProductColumn({
+                      'Marca': product.brand,
+                      'Data de Cadastro':
+                          DateFormat('dd/MM/yyyy').format(product.createdAt),
+                    }),
+                  ],
+                ),
+              ),
+
+              const SizedBox(width: 20),
+
+              // Botões de ação
+              IconButton(
+                icon: Icon(
+                  isLeitor ? Icons.remove_red_eye : Icons.edit,
+                ),
+                onPressed: () => isLeitor
+                    ? Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => ProductDetailPage(product),
+                        ),
+                      )
+                    : Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => ProductFormPage(product: product),
+                        ),
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
