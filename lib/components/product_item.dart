@@ -1,4 +1,5 @@
 import 'package:controle_estoque_app/core/models/product.dart';
+import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:controle_estoque_app/pages/product_form_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,8 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isLeitor = UserService().currentUser!.isLeitor;
+
     Widget getProductColumn(Map<String, String> values) {
       return Expanded(
           child: Column(
@@ -54,7 +57,12 @@ class ProductItem extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.fromLTRB(
+          15,
+          10,
+          0,
+          10,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,30 +93,36 @@ class ProductItem extends StatelessWidget {
 
             // Informações do produto
             Expanded(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                getProductColumn({
-                  'Nome': product.name,
-                  'Tipo': product.type,
-                }),
-                getProductColumn({
-                  'Marca': product.brand,
-                  'Data de Cadastro':
-                      DateFormat('dd/MM/yyyy').format(product.createdAt),
-                }),
-              ],
-            )),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getProductColumn({
+                    'Nome': product.name,
+                    'Tipo': product.type,
+                  }),
+                  getProductColumn({
+                    'Marca': product.brand,
+                    'Data de Cadastro':
+                        DateFormat('dd/MM/yyyy').format(product.createdAt),
+                  }),
+                ],
+              ),
+            ),
 
             const SizedBox(width: 20),
 
+            // Botões de ação
             IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (ctx) => ProductFormPage(product: product),
-                ),
+              icon: Icon(
+                isLeitor ? Icons.remove_red_eye : Icons.edit,
               ),
+              onPressed: () => isLeitor
+                  ? null
+                  : Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => ProductFormPage(product: product),
+                      ),
+                    ),
             ),
           ],
         ),

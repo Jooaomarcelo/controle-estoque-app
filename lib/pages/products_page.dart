@@ -118,7 +118,8 @@ class _ProductsPageState extends State<ProductsPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: const NewProduct(),
+      floatingActionButton:
+          UserService().currentUser!.isLeitor ? null : const NewProduct(),
     );
   }
 }
