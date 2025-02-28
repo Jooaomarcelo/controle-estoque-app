@@ -37,6 +37,7 @@ class SearchProductBar extends StatelessWidget {
               width: 2.0, color: Theme.of(context).colorScheme.primary),
         ),
       ),
+      onSubmitted: (_) => FocusScope.of(context).unfocus(),
     );
   }
 }
