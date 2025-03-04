@@ -7,6 +7,7 @@ class Estoque {
   DateTime dataCadastro;
   DateTime dataUltimaEdicao;
   String idUsuarioEditou;
+  String? image;
 
   Estoque({
     required this.id,
@@ -17,6 +18,7 @@ class Estoque {
     required this.dataCadastro,
     required this.dataUltimaEdicao,
     required this.idUsuarioEditou,
+    this.image,
   });
 
   // Converte um documento Firestore para Estoque

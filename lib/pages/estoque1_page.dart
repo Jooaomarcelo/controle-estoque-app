@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 
 class EstoquePage1 extends StatefulWidget {
-  const EstoquePage1({Key? key}) : super(key: key);
+  const EstoquePage1({super.key});
 
   @override
   State<EstoquePage1> createState() => _EstoquePage1State();
