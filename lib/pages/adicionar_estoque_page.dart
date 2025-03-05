@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:controle_estoque_app/components/image_picker_widget.dart';
 import 'package:controle_estoque_app/core/models/product.dart';
-import 'package:controle_estoque_app/core/models/product_form_data.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
 import 'package:controle_estoque_app/core/services/product/product_firebase_service.dart';
+import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AdicionarEstoquePage extends StatefulWidget {
   final Estoque? estoque; // Estoque para edição (opcional)
@@ -31,21 +33,30 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
   List<Product> _produtos = [];
   String? _produtoSelecionado; // ID do produto selecionado
   bool _isLoading = true;
-  late ProductFormData _formData;
+  
 
   @override
   void initState() {
     super.initState();
     _carregarProdutos();
+    final userService = Provider.of<UserService>(context, listen: false);
+    userService.getUsersByProductsUsersIds([widget.estoque!.idUsuarioEditou]).then((_){
+      setState(() {});
+    });
+    
+    
+    
+    
     
 
     if (widget.estoque != null) {
-      // Preencher os campos com os dados do estoque existente
       _produtoSelecionado = widget.estoque!.idProduto;
       _loteController.text = widget.estoque!.lote.toString();
       _quantidadeController.text = widget.estoque!.quantidade.toString();
-      _dataValidadeController.text = widget.estoque!.dataValidade.toIso8601String();
-    }
+      _dataValidadeController.text = widget.estoque!.dataValidade != null
+          ? widget.estoque!.dataValidade.toIso8601String().split('T').first
+          : '';
+}
   }
 
   
@@ -127,6 +138,7 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       //appBar:  AppBar(
         //centerTitle: true,
@@ -281,12 +293,78 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
           
               SizedBox(height: 15),
               
-              ElevatedButton(
+              
+
+              SizedBox(height: 15),
+              // colocar o If pra edicao
+              if (widget.estoque != null) 
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Editado por: ',
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                             Consumer<UserService>(
+                                builder: (ctx, userProvider, _) => Flexible(
+                                  
+                                child: Text(
+                                    userProvider.usersEmails[
+                                    widget.estoque!.idUsuarioEditou] ??
+                                'Desconhecido',
+                            style: Theme.of(context).textTheme.bodySmall,
+                            overflow: TextOverflow.visible,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Data: ',
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                              Text(
+                                // Verifique se dataUltimaEdicao não é nulo
+                                widget.estoque?.dataUltimaEdicao != null
+                                  ? DateFormat('dd/MM/yyyy').format(widget.estoque!.dataUltimaEdicao)
+                                  : 'Data não disponível',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+              
+
+              
+            SizedBox(height: 50),
+            SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Colors.white,
+                ),
                 onPressed: _salvarEstoque,
-                child: Text(widget.estoque == null ? "Adicionar" : "Salvar Alterações"),
+                child: Text(
+                  widget.estoque == null ? "Cadastrar no Estoque" : "Confirmar",
+                )
+                
               ),
+            )
             ],
+          
           ),
+          
+
         ),
       ),
     );

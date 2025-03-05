@@ -156,7 +156,7 @@ class UserService with ChangeNotifier {
         _usersEmails[userId] = '';
       }
     }
-
+    print('Usuarios carregados: $_usersEmails');
     notifyListeners();
   }
 }
