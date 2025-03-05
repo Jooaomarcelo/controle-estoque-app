@@ -8,6 +8,7 @@ class NewEstoqueButtton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    return Container(
+            
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
             decoration: BoxDecoration(
@@ -20,74 +21,80 @@ class NewEstoqueButtton extends StatelessWidget {
               ),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end, 
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, 
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Primeiro botão
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10), 
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary, 
-                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20), 
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10), 
-                      ),
-                    ),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => const AdicionarEstoquePage(),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 25,
+                  child: SizedBox(
+                    width: 280,
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary, 
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20), 
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30), 
                         ),
-                        const SizedBox(width: 5),
-                        Text(
-                          'Cadastrar no Estoque',
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                color: Colors.white,
-                              ),
+                      ),
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => const AdicionarEstoquePage(),
                         ),
-                      ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            'Cadastrar no Estoque',
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                  color: Colors.white,
+                                ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
+                
                 // Segundo botão
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10), 
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.secondary, 
-                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20), 
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10), 
+                  child: SizedBox(
+                    
+                    width: 280,
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white, 
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20), 
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30), 
+                          side: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2,
+                            ),
+                        ),
                       ),
-                    ),
-                    onPressed: () {
+                      onPressed: () {
+                        
+                      },
+                      child: Text(
+                            'Registrar Baixa',
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                  color: Theme.of(context).colorScheme.primary, 
+                                ),
+                          ),
                       
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.remove,
-                          color: Colors.white,
-                          size: 25,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          'Remover do Estoque',
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                color: Colors.white,
-                              ),
-                        ),
-                      ],
+                    
                     ),
                   ),
                 ),
