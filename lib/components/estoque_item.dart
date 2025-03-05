@@ -1,7 +1,9 @@
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+
 
 class EstoqueItem extends StatefulWidget {
   final Estoque estoque;
@@ -100,34 +102,53 @@ class _EstoqueItemState extends State<EstoqueItem> {
                   ],
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.remove),
-                    onPressed: () {
+                  InkWell(
+                    onTap: () {
                       setState(() {
                         quantidadeBaixa = quantidadeBaixa > 0 ? quantidadeBaixa - 1 : 0;
                       });
                     },
+                    child: SvgPicture.asset(
+                      'assets/images/icone1.svg',
+                     
+                    )
                   ),
-                  Text(
-                    quantidadeBaixa.toString(),
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
+                  SizedBox(width: 1),
+                  
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset(
+                      'assets/images/CaixaDoValor.svg',
+                  ),
+                  Positioned(
+                    child: Text(
+                      quantidadeBaixa.toString(),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: () {
-                      setState(() {
-                        quantidadeBaixa++;
-                      }
-                      );
-                    },
+                    ],
                   ),
+                  SizedBox(width: 1),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        quantidadeBaixa = quantidadeBaixa + 1;
+                      });
+                    },
+                    child: SvgPicture.asset(
+                      'assets/images/icone2.svg',
+                    ),
+                  )
+                  
+                  
                 ],
               )
               

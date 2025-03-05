@@ -39,7 +39,9 @@ flutter:
     - assets/images/estoque.png
     - assets/images/default-light.png
     - assets/images/default-dark.png
-
+    - assets/images/icone1.svg
+    - assets/images/icone2.svg
+    - assets/images/CaixaDoValor.svg
   fonts:
     - family: Poppins
       fonts:
