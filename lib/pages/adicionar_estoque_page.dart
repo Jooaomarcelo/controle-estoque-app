@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:controle_estoque_app/components/image_picker_widget.dart';
 import 'package:controle_estoque_app/core/models/product.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
@@ -7,7 +6,6 @@ import 'package:controle_estoque_app/core/services/product/product_firebase_serv
 import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:controle_estoque_app/core/models/estoque.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 

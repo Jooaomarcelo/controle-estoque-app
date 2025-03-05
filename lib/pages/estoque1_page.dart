@@ -6,6 +6,7 @@ import 'package:controle_estoque_app/components/search_product_bar_estoque.dart'
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
 import 'package:controle_estoque_app/core/services/product/product_firebase_service.dart';
+import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -112,6 +113,8 @@ class _EstoquePage1State extends State<EstoquePage1> {
             ),
           ),
           NewEstoqueButtton(),
+
+
         ],
       ),
       

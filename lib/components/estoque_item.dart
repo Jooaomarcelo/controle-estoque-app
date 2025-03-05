@@ -3,15 +3,20 @@ import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class EstoqueItem extends StatelessWidget {
+class EstoqueItem extends StatefulWidget {
   final Estoque estoque;
   final String nomeProduto;
 
   const EstoqueItem({required this.estoque, required this.nomeProduto, super.key});
 
   @override
+  _EstoqueItemState createState() => _EstoqueItemState();
+}
+
+class _EstoqueItemState extends State<EstoqueItem> {
+  int quantidadeBaixa = 0;
+  @override
   Widget build(BuildContext context) {
-    // Função para criar as colunas com chave/valor
     Widget getEstoqueColumn(Map<String, String> values) {
       return Expanded(
         child: Column(
@@ -38,7 +43,7 @@ class EstoqueItem extends StatelessWidget {
                           fontSize: 13,
                         ),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                     ],
                   ))
               .toList(),
@@ -59,7 +64,7 @@ class EstoqueItem extends StatelessWidget {
       child: InkWell(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (ctx) => AdicionarEstoquePage(estoque:estoque),
+            builder: (ctx) => AdicionarEstoquePage(estoque: widget.estoque),
           ),
         ),
         child: Padding(
@@ -79,24 +84,54 @@ class EstoqueItem extends StatelessWidget {
                 child: Image.asset('assets/images/default-light.png'),
               ),
               const SizedBox(width: 20),
-              // Informações do estoque
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     getEstoqueColumn({
-                      'Produto': nomeProduto,
-                      'Lote': estoque.lote.toString(),
+                      'Produto': widget.nomeProduto,
+                      'Lote': widget.estoque.lote.toString(),
                     }),
                     getEstoqueColumn({
-                      'Quantidade': estoque.quantidade.toString(),
+                      'Quantidade': widget.estoque.quantidade.toString(),
                       'Data de Cadastro':
-                          DateFormat('dd/MM/yyyy').format(estoque.dataCadastro),
+                          DateFormat('dd/MM/yyyy').format(widget.estoque.dataCadastro),
                     }),
                   ],
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove),
+                    onPressed: () {
+                      setState(() {
+                        quantidadeBaixa = quantidadeBaixa > 0 ? quantidadeBaixa - 1 : 0;
+                      });
+                    },
+                  ),
+                  Text(
+                    quantidadeBaixa.toString(),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      setState(() {
+                        quantidadeBaixa++;
+                      }
+                      );
+                    },
+                  ),
+                ],
+              )
+              
+              
             ],
           ),
         ),
