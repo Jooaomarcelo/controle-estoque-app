@@ -1,5 +1,4 @@
 import 'package:controle_estoque_app/core/services/user_service.dart';
-import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart';
 import 'package:controle_estoque_app/pages/auth_page.dart';
 import 'package:controle_estoque_app/pages/estoque1_page.dart';
 import 'package:controle_estoque_app/pages/products_page.dart';
