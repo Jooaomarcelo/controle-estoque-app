@@ -42,6 +42,7 @@ flutter:
     - assets/images/icone1.svg
     - assets/images/icone2.svg
     - assets/images/CaixaDoValor.svg
+    - assets/images/Seta.svg
   fonts:
     - family: Poppins
       fonts:

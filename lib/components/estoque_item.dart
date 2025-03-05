@@ -114,6 +114,7 @@ class _EstoqueItemState extends State<EstoqueItem> {
                     },
                     child: SvgPicture.asset(
                       'assets/images/icone1.svg',
+                      width: 16,
                      
                     )
                   ),

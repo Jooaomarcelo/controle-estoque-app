@@ -6,8 +6,8 @@ import 'package:controle_estoque_app/components/search_product_bar_estoque.dart'
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
 import 'package:controle_estoque_app/core/services/product/product_firebase_service.dart';
-import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 
 
@@ -51,7 +51,11 @@ class _EstoquePage1State extends State<EstoquePage1> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/images/estoque.png', height: 30),
+            
+            Image.asset(
+              'assets/images/estoque.png',
+              height: 30,
+              color: Colors.white,),
             const SizedBox(width: 15),
             const Text(
               'Estoque',
@@ -64,6 +68,13 @@ class _EstoquePage1State extends State<EstoquePage1> {
               ),
           ],
         ),
+      leading: IconButton(
+        icon: SvgPicture.asset(
+          'assets/images/Seta.svg',
+          
+        ),
+        onPressed: () => Navigator.of(context).pop()
+      ),
       ),
       body: Column(
         children: [

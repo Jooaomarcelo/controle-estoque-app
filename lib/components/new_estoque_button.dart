@@ -55,9 +55,12 @@ class NewEstoqueButtton extends StatelessWidget {
                           const SizedBox(width: 5),
                           Text(
                             'Cadastrar no Estoque',
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                  color: Colors.white,
-                                ),
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
                         ],
                       ),
@@ -89,9 +92,12 @@ class NewEstoqueButtton extends StatelessWidget {
                       },
                       child: Text(
                             'Registrar Baixa',
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                  color: Theme.of(context).colorScheme.primary, 
-                                ),
+                            style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).colorScheme.primary,
+                                    fontSize: 16,
+                            ),
                           ),
                       
                     
