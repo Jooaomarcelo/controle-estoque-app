@@ -8,8 +8,15 @@ import 'package:intl/intl.dart';
 class EstoqueItem extends StatefulWidget {
   final Estoque estoque;
   final String nomeProduto;
+  final Function(String,int) onQuantidadeAlterada;
 
-  const EstoqueItem({required this.estoque, required this.nomeProduto, super.key});
+
+  const EstoqueItem({
+    Key? key,
+    required this.estoque,
+    required this.nomeProduto,
+    required this.onQuantidadeAlterada,
+    }) : super(key:key); 
 
   @override
   _EstoqueItemState createState() => _EstoqueItemState();
@@ -17,6 +24,7 @@ class EstoqueItem extends StatefulWidget {
 
 class _EstoqueItemState extends State<EstoqueItem> {
   int quantidadeBaixa = 0;
+
   @override
   Widget build(BuildContext context) {
     Widget getEstoqueColumn(Map<String, String> values) {
@@ -110,31 +118,30 @@ class _EstoqueItemState extends State<EstoqueItem> {
                     onTap: () {
                       setState(() {
                         quantidadeBaixa = quantidadeBaixa > 0 ? quantidadeBaixa - 1 : 0;
+                        widget.onQuantidadeAlterada(widget.estoque.id, quantidadeBaixa);
                       });
                     },
                     child: SvgPicture.asset(
                       'assets/images/icone1.svg',
                       width: 16,
-                     
-                    )
+                    ),
                   ),
                   SizedBox(width: 1),
-                  
                   Stack(
                     alignment: Alignment.center,
                     children: [
                       SvgPicture.asset(
-                      'assets/images/CaixaDoValor.svg',
-                  ),
-                  Positioned(
-                    child: Text(
-                      quantidadeBaixa.toString(),
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
+                        'assets/images/CaixaDoValor.svg',
                       ),
-                    ),
-                  ),
+                      Positioned(
+                        child: Text(
+                          quantidadeBaixa.toString(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(width: 1),
@@ -142,18 +149,15 @@ class _EstoqueItemState extends State<EstoqueItem> {
                     onTap: () {
                       setState(() {
                         quantidadeBaixa = quantidadeBaixa + 1;
+                        widget.onQuantidadeAlterada(widget.estoque.id, quantidadeBaixa);
                       });
                     },
                     child: SvgPicture.asset(
                       'assets/images/icone2.svg',
                     ),
-                  )
-                  
-                  
+                  ),
                 ],
-              )
-              
-              
+              ),
             ],
           ),
         ),

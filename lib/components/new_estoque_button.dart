@@ -1,7 +1,9 @@
+import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart';
 import 'package:flutter/material.dart';
 
 class NewEstoqueButtton extends StatelessWidget {
-  const NewEstoqueButtton({super.key});
+  final VoidCallback onPressed;
+  const NewEstoqueButtton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,13 @@ class NewEstoqueButtton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => AdicionarEstoquePage(),
+                    ),
+                  );
+                },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -87,7 +95,7 @@ class NewEstoqueButtton extends StatelessWidget {
                     ),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: onPressed,
                 child: Text(
                   'Registrar Baixa',
                   style: TextStyle(

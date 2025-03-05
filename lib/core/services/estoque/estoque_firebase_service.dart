@@ -57,6 +57,7 @@ class EstoqueFirebaseService {
         if (!estoqueSnapshot.exists) throw Exception('Estoque não encontrado.');
 
         int quantidadeAtual = estoqueSnapshot['quantidade'] ?? 0;
+        
         if (quantidade > quantidadeAtual) throw Exception('Quantidade insuficiente no estoque.');
 
         // Atualiza a quantidade no estoque

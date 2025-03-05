@@ -6,6 +6,7 @@ import 'package:controle_estoque_app/components/search_product_bar_estoque.dart'
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
 import 'package:controle_estoque_app/core/services/product/product_firebase_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -21,8 +22,10 @@ class EstoquePage1 extends StatefulWidget {
 class _EstoquePage1State extends State<EstoquePage1> {
   final EstoqueFirebaseService _estoqueService = EstoqueFirebaseService();
   final ProductFirebaseService _productService = ProductFirebaseService();
+  
   String _searchQuery = "";
   Map<String, String> _productNames = {};
+  Map<String, int> _quantidadesAjustadas = {}; // Para armazenar as quantidades ajustadas
 
   @override
   void initState() {
@@ -43,6 +46,52 @@ class _EstoquePage1State extends State<EstoquePage1> {
     });
   }
 
+  void _atualizarQuantidade(String estoqueId, int novaQuantidade) {
+    setState(() {
+      _quantidadesAjustadas[estoqueId] = novaQuantidade; // Atualiza a quantidade ajustada
+    });
+  }
+
+  Future<void> salvarBaixas() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Usuário não autenticado!')),
+      );
+      return;
+    }
+
+    if (_quantidadesAjustadas.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Nenhuma alteração feita.')),
+      );
+      return;
+    }
+
+    try {
+      for (var entry in _quantidadesAjustadas.entries) {
+        final estoqueId = entry.key;
+        final quantidade = entry.value;
+
+        if (quantidade > 0) { // Só registrar se a quantidade for maior que 0
+          await _estoqueService.darBaixa(estoqueId, quantidade, user.uid);
+        }
+      }
+
+      setState(() {
+        _quantidadesAjustadas.clear(); // Limpa as baixas registradas
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Baixas salvas com sucesso!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao salvar baixas: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,11 +100,11 @@ class _EstoquePage1State extends State<EstoquePage1> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            
             Image.asset(
               'assets/images/estoque.png',
               height: 30,
-              color: Colors.white,),
+              color: Colors.white,
+            ),
             const SizedBox(width: 15),
             const Text(
               'Estoque',
@@ -64,17 +113,16 @@ class _EstoquePage1State extends State<EstoquePage1> {
                 fontWeight: FontWeight.w400,
                 color: Colors.white,
                 fontSize: 24,
-                )
               ),
+            ),
           ],
         ),
-      leading: IconButton(
-        icon: SvgPicture.asset(
-          'assets/images/Seta.svg',
-          
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            'assets/images/Seta.svg',
+          ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        onPressed: () => Navigator.of(context).pop()
-      ),
       ),
       body: Column(
         children: [
@@ -106,16 +154,14 @@ class _EstoquePage1State extends State<EstoquePage1> {
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.7,
                     child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: estoquesFiltrados.length,
                       itemBuilder: (context, index) {
                         final estoque = estoquesFiltrados[index];
                         return EstoqueItem(
-                          estoque:estoque,
-                          nomeProduto:_productNames[estoque.idProduto] ?? "Produto desconhecido",
+                          estoque: estoque,
+                          nomeProduto: _productNames[estoque.idProduto] ?? 'Produto desconhecido',
+                          onQuantidadeAlterada: _atualizarQuantidade,
                         );
-                        
                       },
                     ),
                   ),
@@ -123,14 +169,9 @@ class _EstoquePage1State extends State<EstoquePage1> {
               },
             ),
           ),
-          NewEstoqueButtton(),
-
-
+          NewEstoqueButtton(onPressed:salvarBaixas)
         ],
       ),
-      
-        
-     
     );
   }
 }
