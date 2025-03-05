@@ -28,7 +28,7 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
   final TextEditingController _quantidadeController = TextEditingController();
   final TextEditingController _dataValidadeController = TextEditingController();
   File? _imagemSelecionada;
-  final ImagePicker _picker = ImagePicker();
+
 
   List<Product> _produtos = [];
   String? _produtoSelecionado; // ID do produto selecionado
@@ -39,17 +39,8 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
   void initState() {
     super.initState();
     _carregarProdutos();
-    final userService = Provider.of<UserService>(context, listen: false);
-    userService.getUsersByProductsUsersIds([widget.estoque!.idUsuarioEditou]).then((_){
-      setState(() {});
-    });
-    
-    
-    
-    
-    
-
     if (widget.estoque != null) {
+      _carregarUsuarioEdicao();
       _produtoSelecionado = widget.estoque!.idProduto;
       _loteController.text = widget.estoque!.lote.toString();
       _quantidadeController.text = widget.estoque!.quantidade.toString();
@@ -57,6 +48,17 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
           ? widget.estoque!.dataValidade.toIso8601String().split('T').first
           : '';
 }
+  }
+
+  Future<void> _carregarUsuarioEdicao() async {
+    final userService = Provider.of<UserService>(context, listen: false);
+    try {
+      await userService.getUsersByProductsUsersIds([widget.estoque!.idUsuarioEditou]);
+      setState(() {});
+    } catch (e) {
+      print('Erro ao carregar usuário que editou: $e');
+    }
+    
   }
 
   
@@ -111,17 +113,7 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
     }
   }
 
-  Future<void> _selecionarImagem() async {
-  final XFile? imagem = await _picker.pickImage(
-    source: ImageSource.gallery, 
-  );
-
-  if (imagem != null) {
-    setState(() {
-      _imagemSelecionada = File(imagem.path);
-    });
-  }
-}
+  
   Future<void> _selectDataValidade() async {
     final DateTime? selectedDate = await showDatePicker(
       context: context,
