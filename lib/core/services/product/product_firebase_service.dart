@@ -39,7 +39,7 @@ class ProductFirebaseService implements ProductService {
 
     // Upload da imagem do produto
     final imageName = formData.imageFile != null
-        ? formData.imageFile!.path.split('/').last.split('IMG').last
+        ? formData.imageFile!.path.split('/').last.replaceAll('scaled_', '')
         : '${formData.name.trim().toLowerCase().replaceAll(' ', '_')}.jpg}';
 
     final imageUrl = await _uploadProductImage(formData.image, imageName);
@@ -73,7 +73,7 @@ class ProductFirebaseService implements ProductService {
 
     // Upload da imagem do produto
     final imageName = formData.imageFile != null
-        ? formData.imageFile!.path.split('/').last.split('IMG').last
+        ? formData.imageFile!.path.split('/').last.replaceAll('scaled_', '')
         : '${formData.name.trim().toLowerCase().replaceAll(' ', '_')}.jpg}';
 
     final imageUrl = await _uploadProductImage(formData.imageFile, imageName);

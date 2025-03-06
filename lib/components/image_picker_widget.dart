@@ -63,6 +63,12 @@ class _ImagePickerState extends State<ImagePickerWidget> {
                           width: 90,
                           height: 90,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/default-dark.png',
+                              width: 90,
+                            );
+                          },
                         ),
                 ),
         ),

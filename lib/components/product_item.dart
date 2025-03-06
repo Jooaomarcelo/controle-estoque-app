@@ -47,6 +47,29 @@ class ProductItem extends StatelessWidget {
       ));
     }
 
+    Widget getProductImage() {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          product.image!,
+          width: 60,
+          height: 60,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+                width: 60,
+                height: 60,
+                padding: const EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Image.asset('assets/images/default-light.png'));
+          },
+        ),
+      );
+    }
+
     return InkWell(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
@@ -76,25 +99,18 @@ class ProductItem extends StatelessWidget {
             children: [
               // Imagem do produto
               if (product.image!.isNotEmpty)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    product.image!,
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                  ),
-                )
+                getProductImage()
               else
                 Container(
-                    width: 60,
-                    height: 60,
-                    padding: const EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Image.asset('assets/images/default-light.png')),
+                  width: 60,
+                  height: 60,
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Image.asset('assets/images/default-light.png'),
+                ),
 
               const SizedBox(width: 20),
 

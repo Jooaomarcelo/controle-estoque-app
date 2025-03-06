@@ -71,6 +71,12 @@ class ProductDetailPage extends StatelessWidget {
                         width: 150,
                         height: 150,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/default-dark.png',
+                            width: 150,
+                          );
+                        },
                       ),
                     ),
             ),
