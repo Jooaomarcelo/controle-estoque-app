@@ -8,45 +8,193 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Home Page'),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.logout,
-                color: Colors.white,
+          title: Image.asset(
+                'assets/images/Logo.png',
+                fit: BoxFit.contain,
+                height: 89,
               ),
-              onPressed: () {
-                UserService().logout();
-              },
-            )
-          ],
+          centerTitle: true,
+
+            
+          
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  onPressed: () => Navigator.of(context).pushNamed('/products'),
-                  child: Row(
-                    children: [
-                      Icon(Icons.menu_open_sharp),
-                      Text('Produtos'),
-                      ],
-                    )
-                  ),
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pushNamed('/estoque'),
-                child: Row(
-                  children: [
-                    Icon(Icons.add_box_sharp),
-                    Text('Estoque')
-                  
-                  ]
+          child: Container(
+            width: 240,
+            height: 381,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Bem vindo, Usuário',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Poppins',
+                    color: Theme.of(context).colorScheme.primary,
 
-                )
-              )
-            ],
+                  ),
+                ),
+                SizedBox(
+                  height: 29,
+                ),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      side: BorderSide (
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                    ),
+                      onPressed: () {},
+                      child: Row(
+                        children: [
+                          Image.asset(
+                          'assets/images/perfil.png',
+                          fit: BoxFit.contain,
+                          height: 24,
+                        ),
+                        SizedBox(width: 22,),
+                          Text(
+                            'Perfil',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Poppins',
+                              color: Colors.white,
+                            ),
+                            ),
+                          ],
+                        )
+                      ),
+                ),
+                SizedBox(height:16),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      side: BorderSide (
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                    ),
+                    onPressed: () => Navigator.of(context).pushNamed('/products'),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/iconeProdutos.png',
+                          fit: BoxFit.contain,
+                          height: 24,
+                        ),
+                        SizedBox(width: 22,),
+                        Text(
+                            'Produtos',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Poppins',
+                              color: Colors.white,
+                            ),
+                            ),
+                      ],
+                              
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      side: BorderSide (
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                    ),
+                    onPressed: () => Navigator.of(context).pushNamed('/estoque'),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/iconeEstoque.png',
+                          fit: BoxFit.contain,
+                          height: 24,
+                        ),
+                        SizedBox(width: 22,),
+                        Text(
+                            'Estoque',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Poppins',
+                              color: Colors.white,
+                            ),
+                            ),
+                      ],
+                              
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 80,
+                ),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      side: BorderSide (
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                    ),
+                    onPressed: () => UserService().logout(),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/iconeSair.png',
+                          fit: BoxFit.contain,
+                          height: 24,
+                        ),
+                        SizedBox(width: 22,),
+                        Text(
+                            'Sair',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Poppins',
+                              color: Colors.white,
+                            ),
+                            ),
+                      ],
+                              
+                    ),
+                  ),
+                ),
+            
+            
+            
+              ],
+            ),
           ),
-        ));
+        )
+        );
   }
 }
