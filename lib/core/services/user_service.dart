@@ -6,9 +6,8 @@ import 'package:controle_estoque_app/core/models/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 
-class UserService with ChangeNotifier {
+class UserService {
   /*------- Stream de alteração no usuário logado -------*/
 
   static UserData? _currentUser;
@@ -130,33 +129,5 @@ class UserService with ChangeNotifier {
     }
 
     return null;
-  }
-
-  /*-------------- Guardando uma 'cache' de emails --------------*/
-  final Map<String, String> _usersEmails = {};
-
-  Map<String, String> get usersEmails => _usersEmails;
-
-  Future<void> getUsersByProductsUsersIds(List<String> userIds) async {
-    final store = FirebaseFirestore.instance;
-
-    final newUsersIds =
-        userIds.where((id) => !_usersEmails.containsKey(id)).toList();
-
-    if (newUsersIds.isEmpty) return;
-
-    for (var userId in newUsersIds) {
-      final docRef = store.collection('users').doc(userId);
-      final docSnapshot = await docRef.get();
-
-      if (docSnapshot.exists && docSnapshot.data() != null) {
-        _usersEmails[userId] =
-            docSnapshot.data()!['email'] ?? 'Usuário desconhecido';
-      } else {
-        _usersEmails[userId] = '';
-      }
-    }
-
-    notifyListeners();
   }
 }

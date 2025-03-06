@@ -1,8 +1,6 @@
 import 'package:controle_estoque_app/core/models/product.dart';
-import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final Product product;
@@ -95,12 +93,8 @@ class ProductDetailPage extends StatelessWidget {
                         DateFormat('dd/MM/yyyy').format(product.createdAt)),
                     getProductInfo("Última edição",
                         DateFormat('dd/MM/yyyy').format(product.lastEdited)),
-                    Consumer<UserService>(
-                      builder: (ctx, userService, _) => getProductInfo(
-                          "Usuário editor",
-                          userService.usersEmails[product.userIdLastUpdated] ??
-                              product.userIdLastUpdated),
-                    ),
+                    getProductInfo(
+                        "Usuário editor", product.userEmailLastUpdated),
                   ],
                 )
               ],

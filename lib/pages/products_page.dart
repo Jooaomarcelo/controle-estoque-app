@@ -8,7 +8,6 @@ import 'package:controle_estoque_app/core/services/product/product_service.dart'
 import 'package:controle_estoque_app/components/search_product_bar.dart';
 import 'package:controle_estoque_app/components/new_product.dart';
 import 'package:controle_estoque_app/components/product_item.dart';
-import 'package:provider/provider.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -84,16 +83,6 @@ class _ProductsPageState extends State<ProductsPage> {
                     );
                   } else {
                     final products = snapshot.data as List<Product>;
-                    // Pegamos os IDs únicos dos usuários que editaram os produtos
-                    final userIds = products
-                        .map((p) => p.userIdLastUpdated)
-                        .toSet()
-                        .toList();
-
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Provider.of<UserService>(context, listen: false)
-                          .getUsersByProductsUsersIds(userIds);
-                    });
 
                     return ListView.builder(
                       padding: EdgeInsets.only(bottom: !_isLeitor ? 100 : 0),

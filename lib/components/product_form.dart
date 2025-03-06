@@ -3,10 +3,8 @@ import 'dart:io';
 import 'package:controle_estoque_app/components/image_picker_widget.dart';
 import 'package:controle_estoque_app/core/models/product.dart';
 import 'package:controle_estoque_app/core/models/product_form_data.dart';
-import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class ProductForm extends StatefulWidget {
   final Product? product;
@@ -180,15 +178,11 @@ class _ProductFormState extends State<ProductForm> {
                         'Editado por: ',
                         style: Theme.of(context).textTheme.labelMedium,
                       ),
-                      Consumer<UserService>(
-                        builder: (ctx, userProvider, _) => Flexible(
-                          child: Text(
-                            userProvider.usersEmails[
-                                    widget.product!.userIdLastUpdated] ??
-                                '',
-                            style: Theme.of(context).textTheme.bodySmall,
-                            overflow: TextOverflow.visible,
-                          ),
+                      Flexible(
+                        child: Text(
+                          widget.product!.userEmailLastUpdated,
+                          style: Theme.of(context).textTheme.bodySmall,
+                          overflow: TextOverflow.visible,
                         ),
                       ),
                     ],
