@@ -8,6 +8,7 @@ class Product {
   final DateTime createdAt;
   final DateTime lastEdited;
   final String userIdLastUpdated;
+  final String userEmailLastUpdated;
 
   Product({
     required this.id,
@@ -19,5 +20,6 @@ class Product {
     required this.createdAt,
     required this.lastEdited,
     required this.userIdLastUpdated,
+    required this.userEmailLastUpdated,
   });
 }

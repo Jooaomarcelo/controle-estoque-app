@@ -52,6 +52,7 @@ class ProductFirebaseService implements ProductService {
       createdAt: DateTime.now(),
       lastEdited: DateTime.now(),
       userIdLastUpdated: user.id,
+      userEmailLastUpdated: user.email,
     );
 
     await store
@@ -83,6 +84,7 @@ class ProductFirebaseService implements ProductService {
       createdAt: product.createdAt,
       lastEdited: DateTime.now(),
       userIdLastUpdated: user.id,
+      userEmailLastUpdated: user.email,
     );
 
     await store
@@ -113,6 +115,7 @@ class ProductFirebaseService implements ProductService {
       createdAt: DateTime.parse(doc['dataCadastro']),
       lastEdited: DateTime.parse(doc['dataUltimaEdicao']),
       userIdLastUpdated: doc['idUsuarioEditou'],
+      userEmailLastUpdated: doc['emailUsuarioEditou'],
     );
   }
 
@@ -126,6 +129,7 @@ class ProductFirebaseService implements ProductService {
       'dataCadastro': product.createdAt.toIso8601String(),
       'dataUltimaEdicao': product.lastEdited.toIso8601String(),
       'idUsuarioEditou': product.userIdLastUpdated,
+      'emailUsuarioEditou': product.userEmailLastUpdated,
     };
   }
 }
