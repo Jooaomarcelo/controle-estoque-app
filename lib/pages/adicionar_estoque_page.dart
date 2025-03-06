@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class AdicionarEstoquePage extends StatefulWidget {
   final Estoque? estoque; // Estoque para edição (opcional)
 
-  const AdicionarEstoquePage({Key? key, this.estoque}) : super(key: key);
+  const AdicionarEstoquePage({super.key, this.estoque});
 
   @override
   _AdicionarEstoquePageState createState() => _AdicionarEstoquePageState();
@@ -140,7 +140,7 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
           child: 
               Form(
               key: _formKey,
-              child: Container(
+              child: SizedBox(
                 width: 283,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,7 +352,7 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
                                       builder: (ctx, userProvider, _) => Text(
                                         userProvider.usersEmails[widget.estoque!.idUsuarioEditou] ?? 'Desconhecido',
                                         style: TextStyle(
-                                          color: Theme.of(context).colorScheme.onBackground, // Usa cor visível
+                                          color: Theme.of(context).colorScheme.onSurface, // Usa cor visível
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
                                           fontFamily: 'Poppins',
@@ -380,7 +380,7 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
                                           ? DateFormat('dd/MM/yyyy').format(widget.estoque!.dataUltimaEdicao)
                                           : 'Data não disponível',
                                       style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onBackground, // Usa cor visível
+                                        color: Theme.of(context).colorScheme.onSurface, // Usa cor visível
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: 'Poppins',

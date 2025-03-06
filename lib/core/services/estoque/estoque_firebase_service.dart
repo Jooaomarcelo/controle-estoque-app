@@ -45,35 +45,5 @@ class EstoqueFirebaseService {
     await _firestore.collection('estoques').doc(id).delete();
   }
 
-  // Dar baixa (atualizar a quantidade de um estoque)
-  Future<void> darBaixa(String estoqueId, int quantidade, String userId) async {
-    final estoqueRef = _firestore.collection('estoques').doc(estoqueId);
-    final baixaRef = _firestore.collection('baixas').doc();
-
-    try {
-      await _firestore.runTransaction((transaction) async {
-        final estoqueSnapshot = await transaction.get(estoqueRef);
-        
-        if (!estoqueSnapshot.exists) throw Exception('Estoque não encontrado.');
-
-        int quantidadeAtual = estoqueSnapshot['quantidade'] ?? 0;
-        
-        if (quantidade > quantidadeAtual) throw Exception('Quantidade insuficiente no estoque.');
-
-        // Atualiza a quantidade no estoque
-        transaction.update(estoqueRef, {'quantidade': quantidadeAtual - quantidade});
-
-        // Cria um registro na coleção "baixa"
-        transaction.set(baixaRef, {
-          'idEstoque': estoqueId,
-          'quantidade': quantidade,
-          'data': Timestamp.now(),
-          'idUsuario': userId,
-        });
-      });
-    } catch (e) {
-      print('Erro ao dar baixa: $e');
-      rethrow;
-    }
-  }
+  
 }

@@ -8,22 +8,40 @@ import 'package:intl/intl.dart';
 class EstoqueItem extends StatefulWidget {
   final Estoque estoque;
   final String nomeProduto;
+  final int initialQuantidade;
   final Function(String,int) onQuantidadeAlterada;
 
 
   const EstoqueItem({
-    Key? key,
+    super.key,
     required this.estoque,
     required this.nomeProduto,
+    required this.initialQuantidade,
     required this.onQuantidadeAlterada,
-    }) : super(key:key); 
+    }); 
 
   @override
   _EstoqueItemState createState() => _EstoqueItemState();
 }
 
 class _EstoqueItemState extends State<EstoqueItem> {
-  int quantidadeBaixa = 0;
+  late int quantidadeBaixa;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    quantidadeBaixa = widget.initialQuantidade;
+  }
+  @override
+  void didUpdateWidget(covariant EstoqueItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if(oldWidget.initialQuantidade != widget.initialQuantidade){
+      quantidadeBaixa = widget.initialQuantidade;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,8 +136,11 @@ class _EstoqueItemState extends State<EstoqueItem> {
                     onTap: () {
                       setState(() {
                         quantidadeBaixa = quantidadeBaixa > 0 ? quantidadeBaixa - 1 : 0;
-                        widget.onQuantidadeAlterada(widget.estoque.id, quantidadeBaixa);
+                        
+                        print(quantidadeBaixa);
                       });
+                    widget.onQuantidadeAlterada(widget.estoque.id, quantidadeBaixa);
+
                     },
                     child: SvgPicture.asset(
                       'assets/images/icone1.svg',
@@ -149,8 +170,11 @@ class _EstoqueItemState extends State<EstoqueItem> {
                     onTap: () {
                       setState(() {
                         quantidadeBaixa = quantidadeBaixa + 1;
-                        widget.onQuantidadeAlterada(widget.estoque.id, quantidadeBaixa);
+                        
                       });
+                    widget.onQuantidadeAlterada(widget.estoque.id, quantidadeBaixa);
+                    print(quantidadeBaixa);
+
                     },
                     child: SvgPicture.asset(
                       'assets/images/icone2.svg',

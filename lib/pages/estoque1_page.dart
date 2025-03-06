@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:controle_estoque_app/components/estoque_item.dart';
 import 'package:controle_estoque_app/components/new_estoque_button.dart';
 import 'package:controle_estoque_app/components/search_product_bar_estoque.dart';
+import 'package:controle_estoque_app/core/models/baixa.dart';
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
 import 'package:controle_estoque_app/core/services/product/product_firebase_service.dart';
@@ -25,7 +27,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
   
   String _searchQuery = "";
   Map<String, String> _productNames = {};
-  Map<String, int> _quantidadesAjustadas = {}; // Para armazenar as quantidades ajustadas
+  final Map<String, int> _quantidadesAjustadas = {}; // Para armazenar as quantidades ajustadas
 
   @override
   void initState() {
@@ -53,44 +55,52 @@ class _EstoquePage1State extends State<EstoquePage1> {
   }
 
   Future<void> salvarBaixas() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Usuário não autenticado!')),
-      );
-      return;
-    }
-
-    if (_quantidadesAjustadas.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Nenhuma alteração feita.')),
-      );
-      return;
-    }
-
-    try {
-      for (var entry in _quantidadesAjustadas.entries) {
-        final estoqueId = entry.key;
-        final quantidade = entry.value;
-
-        if (quantidade > 0) { // Só registrar se a quantidade for maior que 0
-          await _estoqueService.darBaixa(estoqueId, quantidade, user.uid);
-        }
-      }
-
-      setState(() {
-        _quantidadesAjustadas.clear(); // Limpa as baixas registradas
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Baixas salvas com sucesso!')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao salvar baixas: $e')),
-      );
-    }
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Usuário não autenticado!')),
+    );
+    return;
   }
+
+  if (_quantidadesAjustadas.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Nenhuma alteração feita.')),
+    );
+    return;
+  }
+
+  try {
+    for (var entry in _quantidadesAjustadas.entries) {
+      final estoqueId = entry.key;
+      final quantidade = entry.value;
+
+      if (quantidade > 0) { // Só registrar se a quantidade for maior que 0
+        final baixa = Baixa(
+          idBaixa: FirebaseFirestore.instance.collection('baixas').doc().id, // Gerando um novo ID
+          idEstoque: estoqueId,
+          quantidade: quantidade,
+          data: DateTime.now(),
+          idUsuario: user.uid,
+        );
+
+        await baixa.registrarBaixa();
+      }
+    }
+
+    setState(() {
+      _quantidadesAjustadas.clear(); // Limpa as baixas registradas
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Baixas salvas com sucesso!')),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Erro ao salvar baixas: $e')),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -158,8 +168,10 @@ class _EstoquePage1State extends State<EstoquePage1> {
                       itemBuilder: (context, index) {
                         final estoque = estoquesFiltrados[index];
                         return EstoqueItem(
+                          key: ValueKey(estoque.id),
                           estoque: estoque,
                           nomeProduto: _productNames[estoque.idProduto] ?? 'Produto desconhecido',
+                          initialQuantidade: _quantidadesAjustadas[estoque.id] ?? 0,
                           onQuantidadeAlterada: _atualizarQuantidade,
                         );
                       },
