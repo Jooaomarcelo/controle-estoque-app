@@ -38,7 +38,9 @@ class ProductFirebaseService implements ProductService {
     final store = FirebaseFirestore.instance;
 
     // Upload da imagem do produto
-    final imageName = '${formData.name.trim().replaceAll(' ', '_')}.jpg';
+    final imageName = formData.imageFile != null
+        ? formData.imageFile!.path.split('/').last.split('IMG').last
+        : '${formData.name.trim().toLowerCase().replaceAll(' ', '_')}.jpg}';
 
     final imageUrl = await _uploadProductImage(formData.image, imageName);
 
@@ -70,9 +72,11 @@ class ProductFirebaseService implements ProductService {
     final store = FirebaseFirestore.instance;
 
     // Upload da imagem do produto
-    final imageName = '${formData.name.trim().replaceAll(' ', '_')}.jpg';
+    final imageName = formData.imageFile != null
+        ? formData.imageFile!.path.split('/').last.split('IMG').last
+        : '${formData.name.trim().toLowerCase().replaceAll(' ', '_')}.jpg}';
 
-    final imageUrl = await _uploadProductImage(formData.image, imageName);
+    final imageUrl = await _uploadProductImage(formData.imageFile, imageName);
 
     final editedProduct = Product(
       id: '',
@@ -80,7 +84,7 @@ class ProductFirebaseService implements ProductService {
       type: formData.type,
       brand: formData.brand,
       description: formData.description,
-      image: imageUrl,
+      image: imageUrl == '' ? product.image : imageUrl,
       createdAt: product.createdAt,
       lastEdited: DateTime.now(),
       userIdLastUpdated: user.id,

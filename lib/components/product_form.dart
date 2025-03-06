@@ -37,6 +37,8 @@ class _ProductFormState extends State<ProductForm> {
             brand: widget.product!.brand,
             description: widget.product!.description ?? '',
             type: widget.product!.type,
+            imageUrl:
+                widget.product!.image != '' ? widget.product!.image : null,
           )
         : ProductFormData();
   }
@@ -105,7 +107,7 @@ class _ProductFormState extends State<ProductForm> {
   }
 
   void _handleImagePick(File image) {
-    _formData.image = image;
+    _formData.imageFile = image;
   }
 
   @override

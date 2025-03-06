@@ -5,13 +5,17 @@ class ProductFormData {
   String type;
   String brand;
   String description;
-  File? image;
+  File? imageFile;
+  String? imageUrl;
 
   ProductFormData({
     this.name = '',
     this.type = '',
     this.brand = '',
     this.description = '',
-    this.image,
+    this.imageFile,
+    this.imageUrl,
   });
+
+  dynamic get image => imageFile ?? imageUrl;
 }
