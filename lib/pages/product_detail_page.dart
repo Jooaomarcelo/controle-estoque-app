@@ -45,7 +45,7 @@ class ProductDetailPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'assets/images/icone-produtos.png',
+              'assets/images/iconeProdutos.png',
             ),
             const SizedBox(width: 15),
             const Text('Produtos'),

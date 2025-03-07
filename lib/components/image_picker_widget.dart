@@ -79,13 +79,18 @@ class _ImagePickerState extends State<ImagePickerWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             // mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.add),
+              Icon(
+                Icons.add,
+                color: Theme.of(context).colorScheme.primary,
+                ),
               const SizedBox(width: 5),
               Text(
                 'Adicionar imagem',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
-                  fontSize: 16,
+                  fontSize: 12,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],

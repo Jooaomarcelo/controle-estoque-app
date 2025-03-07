@@ -22,4 +22,6 @@ class Product {
     required this.userIdLastUpdated,
     required this.userEmailLastUpdated,
   });
+
+  
 }

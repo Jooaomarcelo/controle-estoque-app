@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:controle_estoque_app/pages/auth_or_app_page.dart';
 import 'package:controle_estoque_app/pages/auth_page.dart';
+import 'package:controle_estoque_app/pages/estoque1_page.dart';
 import 'package:controle_estoque_app/pages/products_page.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -57,13 +58,15 @@ class MyApp extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-        useMaterial3: true,
+        
       ),
       routes: {
-        '/': (ctx) => const AuthOrAppPage(),
-        '/auth': (ctx) => const AuthPage(),
-        '/products': (ctx) => const ProductsPage(),
-      },
+          '/': (ctx) => const AuthOrAppPage(),
+          '/auth': (ctx) => const AuthPage(),
+          '/products': (ctx) => const ProductsPage(),
+          '/estoque': (ctx) => const EstoquePage1(),
+          
+        },
     );
   }
 }

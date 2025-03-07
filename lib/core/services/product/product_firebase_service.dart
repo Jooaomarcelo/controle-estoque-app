@@ -136,4 +136,25 @@ class ProductFirebaseService implements ProductService {
       'emailUsuarioEditou': product.userEmailLastUpdated,
     };
   }
+   Future<List<Product>> buscarProdutos() async {
+    final store = FirebaseFirestore.instance;
+
+    try {
+      // Buscar todos os produtos ordenados por data de cadastro
+      final snapshot = await store
+          .collection('products')
+          .orderBy('dataCadastro', descending: true)
+          .get();
+
+      // Converter os dados de cada documento para instâncias de Product
+      final produtos = snapshot.docs.map((doc) {
+        return _fromFirestore(doc, null);
+      }).toList();
+
+      return produtos;
+    } catch (e) {
+      print('Erro ao buscar produtos: $e');
+      return [];
+    }
+  }
 }

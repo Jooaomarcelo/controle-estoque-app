@@ -153,6 +153,6 @@ app.*.symbols
 
 # Firebase
 lib/firebase_options.dart
-google-services.json
+android/app/google-services.json
 GoogleService-Info.plist
 firebase*

@@ -1,0 +1,2 @@
+C:/Users/vanin/Documents/ASIMOV/controle-estoque-app/android/app/.cxx/Debug/6h1a1u3p/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/vanin/Documents/ASIMOV/controle-estoque-app/android/app/.cxx/Debug/6h1a1u3p/armeabi-v7a/CMakeFiles/rebuild_cache.dir

@@ -13,5 +13,7 @@ abstract class ProductService {
 
   Future<void> removeProduct(String productId);
 
+  
+
   factory ProductService() => ProductFirebaseService();
 }
