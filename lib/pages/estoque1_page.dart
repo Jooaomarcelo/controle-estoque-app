@@ -164,6 +164,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.7,
                     child: ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 70),
                       itemCount: estoquesFiltrados.length,
                       itemBuilder: (context, index) {
                         final estoque = estoquesFiltrados[index];
@@ -181,7 +182,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
               },
             ),
           ),
-          NewEstoqueButtton(onPressed:salvarBaixas)
+          NewEstoqueButtton(onPressed:salvarBaixas),
         ],
       ),
     );

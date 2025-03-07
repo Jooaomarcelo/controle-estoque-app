@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
           
         ),
         body: Center(
-          child: Container(
+          child: SizedBox(
             width: 240,
             height: 381,
             child: Column(
