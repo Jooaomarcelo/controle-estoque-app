@@ -43,33 +43,37 @@ class UserService with ChangeNotifier {
     final data = doc.data();
 
     return UserData(
-      id: data?['codigo'],
+      id: doc.id,
+      code: data?['codigo'],
       name: data?['nome'],
       email: data?['email'],
       tipoUsuario: TipoUsuario.values.firstWhere(
         (e) => e.name == data?['tipoUsuario'],
       ),
       imageUrl: data?['imagemUrl'],
+      createdAt: DateTime.parse(data?['dataCadastro']),
     );
   }
 
   static Map<String, dynamic> _toFirestore(UserData user, SetOptions? options) {
     return {
-      'codigo': user.id.substring(0, 6).toUpperCase(),
+      'codigo': user.id!.substring(0, 6).toUpperCase(),
       'nome': user.name,
       'email': user.email,
       'tipoUsuario': user.tipoUsuario.name,
       'imagemUrl': user.imageUrl,
+      'dataCadastro': user.createdAt.toIso8601String(),
     };
   }
 
   /*------- Conversão de um objeto User em UserData -------*/
   static UserData _toUserData(User user, [String? name]) {
     return UserData(
-      id: user.uid,
+      code: user.uid.substring(0, 6).toUpperCase(),
       name: name ?? user.displayName ?? user.email!.split('@')[0],
       email: user.email!,
-      imageUrl: user.photoURL ?? '', // Adicionar imagem padrão
+      imageUrl: user.photoURL ?? '',
+      createdAt: DateTime.now(),
     );
   }
 
@@ -94,7 +98,7 @@ class UserService with ChangeNotifier {
       await userCredential.user?.updateDisplayName(name);
 
       // Salvando usuário no banco de dados
-      await _saveUserInDatabase(_toUserData(userCredential.user!));
+      await _saveUserInDatabase(_toUserData(userCredential.user!, name));
 
       await signup.delete();
     }

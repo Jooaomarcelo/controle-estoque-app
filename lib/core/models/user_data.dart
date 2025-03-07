@@ -14,18 +14,22 @@ extension TipoUsuarioExtension on TipoUsuario {
 }
 
 class UserData {
-  final String id;
+  final String? id;
+  final String code;
   final String email;
   final String name;
   String imageUrl;
   final TipoUsuario _tipoUsuario;
+  final DateTime createdAt;
 
   UserData({
-    required this.id,
+    this.id,
+    required this.code,
     required this.name,
     required this.email,
     this.imageUrl = '',
     TipoUsuario tipoUsuario = TipoUsuario.leitor,
+    required this.createdAt,
   }) : _tipoUsuario = tipoUsuario;
 
   TipoUsuario get tipoUsuario => _tipoUsuario;

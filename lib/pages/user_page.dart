@@ -6,15 +6,21 @@ import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class UserPage extends StatelessWidget {
+class UserPage extends StatefulWidget {
   const UserPage({super.key});
 
+  @override
+  State<UserPage> createState() => _UserPageState();
+}
+
+class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     final currentUser = UserService().currentUser;
 
     Future<void> handleImagePick(File image) async {
       await UserService().updateUserImage(image);
+      setState(() {});
     }
 
     return Scaffold(
@@ -105,10 +111,10 @@ class UserPage extends StatelessWidget {
             const SizedBox(height: 40),
             Text('E-mail: ${currentUser.email}'),
             const SizedBox(height: 25),
-            Text('E-mail: ${currentUser.email}'),
-            // Text('Data de cadastro: ${DateFormat('dd/MM/yyyy').format(currentUser.createdAt)}'),
+            Text(
+                'Data de cadastro: ${DateFormat('dd/MM/yyyy').format(currentUser.createdAt)}'),
             const SizedBox(height: 25),
-            Text('Código: ${currentUser.id}')
+            Text('Código: ${currentUser.code}')
           ],
         ),
       ),

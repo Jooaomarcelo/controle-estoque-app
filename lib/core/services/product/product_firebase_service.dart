@@ -53,7 +53,7 @@ class ProductFirebaseService implements ProductService {
       image: imageUrl,
       createdAt: DateTime.now(),
       lastEdited: DateTime.now(),
-      userIdLastUpdated: user.id,
+      userIdLastUpdated: user.id!,
       userEmailLastUpdated: user.email,
     );
 
@@ -87,7 +87,7 @@ class ProductFirebaseService implements ProductService {
       image: imageUrl == '' ? product.image : imageUrl,
       createdAt: product.createdAt,
       lastEdited: DateTime.now(),
-      userIdLastUpdated: user.id,
+      userIdLastUpdated: user.id!,
       userEmailLastUpdated: user.email,
     );
 
@@ -136,7 +136,8 @@ class ProductFirebaseService implements ProductService {
       'emailUsuarioEditou': product.userEmailLastUpdated,
     };
   }
-   Future<List<Product>> buscarProdutos() async {
+
+  Future<List<Product>> buscarProdutos() async {
     final store = FirebaseFirestore.instance;
 
     try {
