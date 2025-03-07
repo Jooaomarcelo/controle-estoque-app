@@ -1,11 +1,14 @@
 // Classe responsável por gerenciar os dados e serviçoes relacionados à usuário:
 // signup, login, logout, saveInDatabase, editUser
 
+import 'dart:io';
+
 import 'package:controle_estoque_app/core/models/user_data.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class UserService with ChangeNotifier {
@@ -40,7 +43,7 @@ class UserService with ChangeNotifier {
     final data = doc.data();
 
     return UserData(
-      id: doc.id,
+      id: data?['codigo'],
       name: data?['nome'],
       email: data?['email'],
       tipoUsuario: TipoUsuario.values.firstWhere(
@@ -52,6 +55,7 @@ class UserService with ChangeNotifier {
 
   static Map<String, dynamic> _toFirestore(UserData user, SetOptions? options) {
     return {
+      'codigo': user.id.substring(0, 6).toUpperCase(),
       'nome': user.name,
       'email': user.email,
       'tipoUsuario': user.tipoUsuario.name,
@@ -60,10 +64,10 @@ class UserService with ChangeNotifier {
   }
 
   /*------- Conversão de um objeto User em UserData -------*/
-  static UserData _toUserData(User user) {
+  static UserData _toUserData(User user, [String? name]) {
     return UserData(
       id: user.uid,
-      name: user.displayName ?? user.email!.split('@')[0],
+      name: name ?? user.displayName ?? user.email!.split('@')[0],
       email: user.email!,
       imageUrl: user.photoURL ?? '', // Adicionar imagem padrão
     );
@@ -107,7 +111,7 @@ class UserService with ChangeNotifier {
     await FirebaseAuth.instance.signOut();
   }
 
-  /*-------------- CRUD de usuário --------------*/
+  /*-------------- Funções auxiliares do usuário --------------*/
 
   Future<void> _saveUserInDatabase(UserData user) async {
     final store = FirebaseFirestore.instance;
@@ -116,6 +120,26 @@ class UserService with ChangeNotifier {
         fromFirestore: _fromFirestore, toFirestore: _toFirestore);
 
     await docRef.set(user);
+  }
+
+  Future<String> _uploadUserImage(File? image, String imageName) async {
+    if (image == null) return '';
+    final storage = FirebaseStorage.instance;
+
+    final imageRef = storage.ref().child('images').child(imageName);
+    await imageRef.putFile(image).whenComplete(() {});
+
+    return await imageRef.getDownloadURL();
+  }
+
+  Future<void> updateUserImage(File image) async {
+    final imageName = '${_currentUser!.id}.jpg';
+    final imageUrl = await _uploadUserImage(image, imageName);
+
+    if (imageUrl.isNotEmpty) {
+      _currentUser!.imageUrl = imageUrl;
+      await _saveUserInDatabase(_currentUser!);
+    }
   }
 
   Future<UserData?> getUserById(String userId) async {
@@ -156,7 +180,6 @@ class UserService with ChangeNotifier {
         _usersEmails[userId] = '';
       }
     }
-    print('Usuarios carregados: $_usersEmails');
     notifyListeners();
   }
 }

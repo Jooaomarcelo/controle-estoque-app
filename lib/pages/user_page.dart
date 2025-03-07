@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:controle_estoque_app/components/image_picker_widget.dart';
 import 'package:controle_estoque_app/core/models/user_data.dart';
 import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +12,10 @@ class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUser = UserService().currentUser;
+
+    Future<void> handleImagePick(File image) async {
+      await UserService().updateUserImage(image);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -55,7 +62,8 @@ class UserPage extends StatelessWidget {
                     height: 200,
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
+                      // color:
+                      //     Theme.of(context).colorScheme.primary.withAlpha(25),
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: currentUser!.imageUrl.isNotEmpty
@@ -74,9 +82,9 @@ class UserPage extends StatelessWidget {
                               },
                             ),
                           )
-                        : Image.asset(
-                            'assets/images/default-light.png',
-                            fit: BoxFit.scaleDown,
+                        : ImagePickerWidget(
+                            onImagePicked: handleImagePick,
+                            image: currentUser.imageUrl,
                           ),
                   ),
                   const SizedBox(height: 10),
@@ -100,8 +108,7 @@ class UserPage extends StatelessWidget {
             Text('E-mail: ${currentUser.email}'),
             // Text('Data de cadastro: ${DateFormat('dd/MM/yyyy').format(currentUser.createdAt)}'),
             const SizedBox(height: 25),
-            Text('E-mail: ${currentUser.email}'),
-            // Text('Código: ${currentUser.code}')
+            Text('Código: ${currentUser.id}')
           ],
         ),
       ),
