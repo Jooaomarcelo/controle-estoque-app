@@ -1,3 +1,4 @@
+import 'package:controle_estoque_app/pages/user_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:controle_estoque_app/pages/auth_or_app_page.dart';
@@ -58,15 +59,14 @@ class MyApp extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-        
       ),
       routes: {
-          '/': (ctx) => const AuthOrAppPage(),
-          '/auth': (ctx) => const AuthPage(),
-          '/products': (ctx) => const ProductsPage(),
-          '/estoque': (ctx) => const EstoquePage1(),
-          
-        },
+        '/': (ctx) => const AuthOrAppPage(),
+        '/auth': (ctx) => const AuthPage(),
+        '/user': (ctx) => const UserPage(),
+        '/products': (ctx) => const ProductsPage(),
+        '/estoque': (ctx) => const EstoquePage1(),
+      },
     );
   }
 }

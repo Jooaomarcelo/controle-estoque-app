@@ -9,14 +9,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Image.asset(
-                'assets/images/Logo.png',
-                fit: BoxFit.contain,
-                height: 89,
-              ),
+            'assets/images/Logo.png',
+            fit: BoxFit.contain,
+            height: 89,
+          ),
           centerTitle: true,
-
-            
-          
         ),
         body: Center(
           child: SizedBox(
@@ -32,7 +29,6 @@ class HomePage extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     fontFamily: 'Poppins',
                     color: Theme.of(context).colorScheme.primary,
-
                   ),
                 ),
                 SizedBox(
@@ -42,24 +38,26 @@ class HomePage extends StatelessWidget {
                   height: 48,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        side: BorderSide(
+                          color: Colors.black,
+                          width: 2,
+                        ),
                       ),
-                      side: BorderSide (
-                        color: Colors.black,
-                        width: 2,
-                      ),
-                    ),
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).pushNamed('/user'),
                       child: Row(
                         children: [
                           Image.asset(
-                          'assets/images/perfil.png',
-                          fit: BoxFit.contain,
-                          height: 24,
-                        ),
-                        SizedBox(width: 22,),
+                            'assets/images/perfil.png',
+                            fit: BoxFit.contain,
+                            height: 24,
+                          ),
+                          SizedBox(
+                            width: 22,
+                          ),
                           Text(
                             'Perfil',
                             style: TextStyle(
@@ -68,12 +66,11 @@ class HomePage extends StatelessWidget {
                               fontFamily: 'Poppins',
                               color: Colors.white,
                             ),
-                            ),
-                          ],
-                        )
-                      ),
+                          ),
+                        ],
+                      )),
                 ),
-                SizedBox(height:16),
+                SizedBox(height: 16),
                 SizedBox(
                   height: 48,
                   child: ElevatedButton(
@@ -82,12 +79,13 @@ class HomePage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      side: BorderSide (
+                      side: BorderSide(
                         color: Colors.black,
                         width: 2,
                       ),
                     ),
-                    onPressed: () => Navigator.of(context).pushNamed('/products'),
+                    onPressed: () =>
+                        Navigator.of(context).pushNamed('/products'),
                     child: Row(
                       children: [
                         Image.asset(
@@ -95,18 +93,19 @@ class HomePage extends StatelessWidget {
                           fit: BoxFit.contain,
                           height: 24,
                         ),
-                        SizedBox(width: 22,),
+                        SizedBox(
+                          width: 22,
+                        ),
                         Text(
-                            'Produtos',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Poppins',
-                              color: Colors.white,
-                            ),
-                            ),
+                          'Produtos',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins',
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
-                              
                     ),
                   ),
                 ),
@@ -121,12 +120,13 @@ class HomePage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      side: BorderSide (
+                      side: BorderSide(
                         color: Colors.black,
                         width: 2,
                       ),
                     ),
-                    onPressed: () => Navigator.of(context).pushNamed('/estoque'),
+                    onPressed: () =>
+                        Navigator.of(context).pushNamed('/estoque'),
                     child: Row(
                       children: [
                         Image.asset(
@@ -134,18 +134,19 @@ class HomePage extends StatelessWidget {
                           fit: BoxFit.contain,
                           height: 24,
                         ),
-                        SizedBox(width: 22,),
+                        SizedBox(
+                          width: 22,
+                        ),
                         Text(
-                            'Estoque',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Poppins',
-                              color: Colors.white,
-                            ),
-                            ),
+                          'Estoque',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins',
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
-                              
                     ),
                   ),
                 ),
@@ -160,7 +161,7 @@ class HomePage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      side: BorderSide (
+                      side: BorderSide(
                         color: Colors.black,
                         width: 2,
                       ),
@@ -173,28 +174,25 @@ class HomePage extends StatelessWidget {
                           fit: BoxFit.contain,
                           height: 24,
                         ),
-                        SizedBox(width: 22,),
+                        SizedBox(
+                          width: 22,
+                        ),
                         Text(
-                            'Sair',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Poppins',
-                              color: Colors.white,
-                            ),
-                            ),
+                          'Sair',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins',
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
-                              
                     ),
                   ),
                 ),
-            
-            
-            
               ],
             ),
           ),
-        )
-        );
+        ));
   }
 }
