@@ -1,5 +1,6 @@
 import 'package:controle_estoque_app/core/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 class ProductDetailPage extends StatelessWidget {
@@ -50,6 +51,12 @@ class ProductDetailPage extends StatelessWidget {
             const SizedBox(width: 15),
             const Text('Produtos'),
           ],
+        ),
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            'assets/images/Seta.svg',
+          ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: Padding(

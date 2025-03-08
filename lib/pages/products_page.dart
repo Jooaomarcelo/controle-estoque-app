@@ -8,6 +8,7 @@ import 'package:controle_estoque_app/core/services/product/product_service.dart'
 import 'package:controle_estoque_app/components/search_product_bar.dart';
 import 'package:controle_estoque_app/components/new_product.dart';
 import 'package:controle_estoque_app/components/product_item.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -50,6 +51,12 @@ class _ProductsPageState extends State<ProductsPage> {
             const SizedBox(width: 15),
             const Text('Produtos'),
           ],
+        ),
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            'assets/images/Seta.svg',
+          ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: Padding(

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:controle_estoque_app/core/models/user_data.dart';
 import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -129,6 +130,12 @@ class _UserPageState extends State<UserPage> {
             const SizedBox(width: 15),
             const Text('Perfil'),
           ],
+        ),
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            'assets/images/Seta.svg',
+          ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: Container(

@@ -4,6 +4,7 @@ import 'package:controle_estoque_app/core/models/product_form_data.dart';
 import 'package:controle_estoque_app/core/services/product/product_service.dart';
 import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductFormPage extends StatefulWidget {
   final Product? product;
@@ -57,12 +58,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   title: Text(
-      //     widget.product == null ? 'Adicionar Produto' : 'Editar Produto',
-      //   ),
-      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Stack(
@@ -76,8 +71,14 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 top: 10,
                 left: 10,
                 child: IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/images/Seta.svg',
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.primary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
-                  icon: Icon(Icons.arrow_back),
                 ),
               ),
             ],
