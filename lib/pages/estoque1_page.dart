@@ -52,6 +52,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
     setState(() {
       _quantidadesAjustadas[estoqueId] = novaQuantidade; // Atualiza a quantidade ajustada
     });
+    
   }
 
   Future<void> salvarBaixas() async {
@@ -69,13 +70,15 @@ class _EstoquePage1State extends State<EstoquePage1> {
     );
     return;
   }
-
+  
   try {
     for (var entry in _quantidadesAjustadas.entries) {
       final estoqueId = entry.key;
       final quantidade = entry.value;
 
-      if (quantidade > 0) { // Só registrar se a quantidade for maior que 0
+      if (quantidade > 0) {
+        List<Baixa> baixas = []; 
+        // Só registrar se a quantidade for maior que 0
         final baixa = Baixa(
           idBaixa: FirebaseFirestore.instance.collection('baixas').doc().id, // Gerando um novo ID
           idEstoque: estoqueId,
@@ -84,7 +87,9 @@ class _EstoquePage1State extends State<EstoquePage1> {
           idUsuario: user.uid,
         );
 
-        await baixa.registrarBaixa();
+        await baixa.registrarBaixa(context);
+
+      
       }
     }
 
@@ -92,12 +97,14 @@ class _EstoquePage1State extends State<EstoquePage1> {
       _quantidadesAjustadas.clear(); // Limpa as baixas registradas
     });
 
+    
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Baixas salvas com sucesso!')),
     );
   } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Erro ao salvar baixas: $e')),
+  
+     ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Erro ao salvar baixas. ')),
     );
   }
 }
