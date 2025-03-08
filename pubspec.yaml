@@ -39,6 +39,7 @@ flutter:
     - assets/images/logo-light.svg
     - assets/images/estoque.png
     - assets/images/default-light.png
+    - assets/images/default-light-user.png
     - assets/images/default-dark.png
     - assets/images/icone1.svg
     - assets/images/icone2.svg
