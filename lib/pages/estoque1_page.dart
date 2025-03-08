@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:controle_estoque_app/components/estoque_item.dart';
+import 'package:controle_estoque_app/components/mensagem_erro_baixa.dart';
 import 'package:controle_estoque_app/components/new_estoque_button.dart';
 import 'package:controle_estoque_app/components/search_product_bar_estoque.dart';
 import 'package:controle_estoque_app/core/models/baixa.dart';
@@ -49,11 +50,25 @@ class _EstoquePage1State extends State<EstoquePage1> {
   }
 
   void _atualizarQuantidade(String estoqueId, int novaQuantidade) {
+    
     setState(() {
       _quantidadesAjustadas[estoqueId] = novaQuantidade; // Atualiza a quantidade ajustada
     });
-    
-  }
+    _estoqueService.getQuantidade(estoqueId).then((quantidadeAtual) {
+      if (novaQuantidade > quantidadeAtual) {
+        showDialog(
+          context: context,
+          builder: (context) => MensagemErro(
+            mensagem: "Quantidade maior do que o limite máximo disponível no estoque.",
+            limiteDisponivel: quantidadeAtual as int,
+          ),
+        );
+      setState(() {
+        _quantidadesAjustadas.clear();
+      });
+      }
+    });
+ }
 
   Future<void> salvarBaixas() async {
   final user = FirebaseAuth.instance.currentUser;
@@ -77,7 +92,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
       final quantidade = entry.value;
 
       if (quantidade > 0) {
-        List<Baixa> baixas = []; 
+        
         // Só registrar se a quantidade for maior que 0
         final baixa = Baixa(
           idBaixa: FirebaseFirestore.instance.collection('baixas').doc().id, // Gerando um novo ID
@@ -102,7 +117,9 @@ class _EstoquePage1State extends State<EstoquePage1> {
       const SnackBar(content: Text('Baixas salvas com sucesso!')),
     );
   } catch (e) {
-  
+    setState(() {
+      _quantidadesAjustadas.clear(); // Limpa as baixas registradas
+    });
      ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Erro ao salvar baixas. ')),
     );

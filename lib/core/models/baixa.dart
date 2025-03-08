@@ -40,18 +40,7 @@ class Baixa {
         if (!estoqueSnapshot.exists) throw Exception('Estoque não encontrado.');
 
         int quantidadeAtual = estoqueSnapshot['quantidade'] ?? 0;
-        if (quantidade > quantidadeAtual){
-        showDialog(
-          context: context,
-          builder: (context) => MensagemErro(
-            mensagem: "Quantidade maior do que o limite máximo disponível no estoque.",
-            limiteDisponivel: quantidadeAtual,
-          ),
-          
-        );
         
-        throw Exception('Quantidade insuficiente no estoque.');
-        }
 
         // Atualiza a quantidade no estoque
         transaction.update(estoqueRef, {'quantidade': quantidadeAtual - quantidade});

@@ -47,5 +47,9 @@ class EstoqueFirebaseService {
     await _firestore.collection('estoques').doc(id).delete();
   }
 
+  Future<num> getQuantidade(String id) async {
+    final estoque = await _firestore.collection('estoques').doc(id).get();
+    return estoque['quantidade'] as num ;
+  }
   
 }
