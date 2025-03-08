@@ -46,7 +46,9 @@ class _AuthPageState extends State<AuthPage> {
           formData.password,
         );
 
-        if (mounted) Navigator.of(context).popUntil(ModalRoute.withName('/'));
+        if (mounted) {
+          Navigator.of(context).pushNamedAndRemoveUntil('/', (_) => false);
+        }
       } else {
         await UserService().signup(
           formData.name,
@@ -63,7 +65,8 @@ class _AuthPageState extends State<AuthPage> {
         }
       }
     } catch (error) {
-      _showErrorDialog('Email ou senha inválida.');
+      debugPrint(error.toString());
+      _showErrorDialog('Ocorreu um erro inesperado!');
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
