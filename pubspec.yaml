@@ -24,6 +24,14 @@ dependencies:
   intl: ^0.20.2
   image_picker: ^1.1.2
   firebase_storage: ^12.4.4
+  flutter_native_splash: ^2.4.4
+
+# Comando para gerar o splash screen
+#   dart run flutter_native_splash:create
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/splash_image.png
 
 dev_dependencies:
   flutter_test:
@@ -46,7 +54,6 @@ flutter:
     - assets/images/CaixaDoValor.svg
     - assets/images/Seta.svg
     - assets/images/Logo.png
-    - assets/images/logo-dark.png
     - assets/images/iconeEstoque.png
     - assets/images/iconeProdutos.png
     - assets/images/perfil.png
