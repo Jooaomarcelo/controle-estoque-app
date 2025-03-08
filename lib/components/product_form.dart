@@ -85,6 +85,8 @@ class _ProductFormState extends State<ProductForm> {
 
         return null;
       },
+      textInputAction:
+          field != 'description' ? TextInputAction.next : TextInputAction.done,
       maxLines: isMultiline ? 3 : 1,
       decoration: InputDecoration(
         labelText: label,

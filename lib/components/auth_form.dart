@@ -90,6 +90,8 @@ class _AuthFormState extends State<AuthForm> {
                         color: Theme.of(context).colorScheme.primary),
                   ),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+                  errorMaxLines: 2,
+                  errorStyle: TextStyle(overflow: TextOverflow.visible),
                 ),
                 onChanged: (name) => _formData.name = name,
                 validator: (textField) {
@@ -105,6 +107,7 @@ class _AuthFormState extends State<AuthForm> {
 
                   return null;
                 },
+                textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_emailFocusNode);
                 },
@@ -130,6 +133,8 @@ class _AuthFormState extends State<AuthForm> {
                       width: 2.0, color: Theme.of(context).colorScheme.primary),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+                errorMaxLines: 2,
+                errorStyle: TextStyle(overflow: TextOverflow.visible),
               ),
               onChanged: (email) => _formData.email = email,
               validator: (textField) {
@@ -145,6 +150,7 @@ class _AuthFormState extends State<AuthForm> {
 
                 return null;
               },
+              textInputAction: TextInputAction.next,
               onFieldSubmitted: (_) {
                 FocusScope.of(context).requestFocus(_passwordFocusNode);
               },
@@ -170,6 +176,8 @@ class _AuthFormState extends State<AuthForm> {
                       width: 2.0, color: Theme.of(context).colorScheme.primary),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+                errorMaxLines: 2,
+                errorStyle: TextStyle(overflow: TextOverflow.visible),
               ),
               onChanged: (password) => _formData.password = password,
               obscureText: true,
