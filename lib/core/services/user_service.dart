@@ -69,6 +69,7 @@ class UserService with ChangeNotifier {
   /*------- Conversão de um objeto User em UserData -------*/
   static UserData _toUserData(User user, [String? name]) {
     return UserData(
+      id: user.uid,
       code: user.uid.substring(0, 6).toUpperCase(),
       name: name ?? user.displayName ?? user.email!.split('@')[0],
       email: user.email!,
