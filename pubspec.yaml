@@ -46,6 +46,7 @@ flutter:
     - assets/images/CaixaDoValor.svg
     - assets/images/Seta.svg
     - assets/images/Logo.png
+    - assets/images/logo-dark.png
     - assets/images/iconeEstoque.png
     - assets/images/iconeProdutos.png
     - assets/images/perfil.png
