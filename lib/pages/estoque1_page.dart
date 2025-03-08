@@ -162,7 +162,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
 
                 return SingleChildScrollView(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.7,
+                    height: MediaQuery.of(context).size.height * 0.7715,
                     child: ListView.builder(
                       padding: const EdgeInsets.only(bottom: 70),
                       itemCount: estoquesFiltrados.length,
@@ -182,9 +182,11 @@ class _EstoquePage1State extends State<EstoquePage1> {
               },
             ),
           ),
-          NewEstoqueButtton(onPressed:salvarBaixas),
+         // NewEstoqueButtton(onPressed:salvarBaixas),
         ],
       ),
+     floatingActionButton: NewEstoqueButtton(onPressed: salvarBaixas),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

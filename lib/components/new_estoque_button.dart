@@ -23,6 +23,7 @@ class NewEstoqueButtton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        
         children: [
           // Espaço superior
           SizedBox(height: 10),
