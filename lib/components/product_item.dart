@@ -7,8 +7,13 @@ import 'package:intl/intl.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;
+  final void Function() onSuccess;
 
-  const ProductItem(this.product, {super.key});
+  const ProductItem(
+    this.product, {
+    required this.onSuccess,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +73,18 @@ class ProductItem extends StatelessWidget {
           },
         ),
       );
+    }
+
+    void wasSuccess() async {
+      final success = await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => ProductFormPage(product: product),
+        ),
+      );
+
+      if (success) {
+        onSuccess();
+      }
     }
 
     return InkWell(
@@ -145,11 +162,7 @@ class ProductItem extends StatelessWidget {
                           builder: (ctx) => ProductDetailPage(product),
                         ),
                       )
-                    : Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => ProductFormPage(product: product),
-                        ),
-                      ),
+                    : wasSuccess(),
               ),
             ],
           ),

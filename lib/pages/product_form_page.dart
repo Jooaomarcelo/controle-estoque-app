@@ -47,12 +47,26 @@ class _ProductFormPageState extends State<ProductFormPage> {
     } catch (error) {
       // Handle error
       debugPrint('Error: $error');
+      _showErrorDialog('Um erro inesperado ocorreu.');
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(true);
       }
     }
+  }
+
+  void _showErrorDialog(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: Theme.of(context).colorScheme.error,
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: ScaffoldMessenger.of(context).hideCurrentSnackBar,
+        ),
+      ),
+    );
   }
 
   @override

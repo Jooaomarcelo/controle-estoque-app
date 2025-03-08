@@ -37,6 +37,23 @@ class _ProductsPageState extends State<ProductsPage> {
     });
   }
 
+  void _showSuccessDialog() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Produto cadastrado com sucesso!',
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: ScaffoldMessenger.of(context).hideCurrentSnackBar,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,11 +115,13 @@ class _ProductsPageState extends State<ProductsPage> {
                         final product = products[i];
 
                         if (_search.isEmpty) {
-                          return ProductItem(product);
+                          return ProductItem(product,
+                              onSuccess: _showSuccessDialog);
                         } else if (product.name
                             .toLowerCase()
                             .contains(_search.trim().toLowerCase())) {
-                          return ProductItem(product);
+                          return ProductItem(product,
+                              onSuccess: _showSuccessDialog);
                         } else {
                           return const SizedBox.shrink();
                         }
@@ -116,7 +135,11 @@ class _ProductsPageState extends State<ProductsPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _isLeitor ? null : const NewProduct(),
+      floatingActionButton: _isLeitor
+          ? null
+          : NewProduct(
+              onSuccess: _showSuccessDialog,
+            ),
     );
   }
 }

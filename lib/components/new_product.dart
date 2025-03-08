@@ -2,10 +2,27 @@ import 'package:controle_estoque_app/pages/product_form_page.dart';
 import 'package:flutter/material.dart';
 
 class NewProduct extends StatelessWidget {
-  const NewProduct({super.key});
+  final void Function() onSuccess;
+
+  const NewProduct({
+    required this.onSuccess,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    void wasSuccess() async {
+      final success = await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => const ProductFormPage(),
+        ),
+      );
+
+      if (success) {
+        onSuccess();
+      }
+    }
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 40, vertical: 25),
@@ -20,11 +37,7 @@ class NewProduct extends StatelessWidget {
       ),
       child: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (ctx) => const ProductFormPage(),
-          ),
-        ),
+        onPressed: wasSuccess,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
