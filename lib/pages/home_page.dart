@@ -18,12 +18,13 @@ class HomePage extends StatelessWidget {
         body: Center(
           child: SizedBox(
             width: 240,
-            height: 381,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Bem vindo, Usuário',
+                  softWrap: false,
+                  overflow: TextOverflow.visible,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w400,

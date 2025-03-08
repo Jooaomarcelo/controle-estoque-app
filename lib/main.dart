@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
         '/products': (ctx) => const ProductsPage(),
         '/estoque': (ctx) => const EstoquePage1(),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
