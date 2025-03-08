@@ -9,6 +9,7 @@ import 'package:controle_estoque_app/core/models/baixa.dart';
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
 import 'package:controle_estoque_app/core/services/product/product_firebase_service.dart';
+import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,6 +26,7 @@ class EstoquePage1 extends StatefulWidget {
 class _EstoquePage1State extends State<EstoquePage1> {
   final EstoqueFirebaseService _estoqueService = EstoqueFirebaseService();
   final ProductFirebaseService _productService = ProductFirebaseService();
+  final _isLeitor = UserService().currentUser!.isLeitor;
   
   String _searchQuery = "";
   Map<String, String> _productNames = {};
@@ -209,8 +211,8 @@ class _EstoquePage1State extends State<EstoquePage1> {
          // NewEstoqueButtton(onPressed:salvarBaixas),
         ],
       ),
-     floatingActionButton: NewEstoqueButtton(onPressed: salvarBaixas),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    floatingActionButton: _isLeitor ? null : NewEstoqueButtton(onPressed: salvarBaixas),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
