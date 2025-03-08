@@ -57,6 +57,16 @@ class _AuthPageState extends State<AuthPage> {
         );
 
         if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Cadastro realizado com sucesso!',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
+          );
+
           Navigator.of(context).pushNamedAndRemoveUntil(
             '/auth',
             ModalRoute.withName('/'),
