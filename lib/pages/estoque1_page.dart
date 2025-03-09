@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:controle_estoque_app/components/estoque_item.dart';
+import 'package:controle_estoque_app/components/mensagem_erro_baixa.dart';
 import 'package:controle_estoque_app/components/new_estoque_button.dart';
 import 'package:controle_estoque_app/components/search_product_bar_estoque.dart';
 import 'package:controle_estoque_app/core/models/baixa.dart';
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/core/services/estoque/estoque_firebase_service.dart';
 import 'package:controle_estoque_app/core/services/product/product_firebase_service.dart';
+import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,6 +26,7 @@ class EstoquePage1 extends StatefulWidget {
 class _EstoquePage1State extends State<EstoquePage1> {
   final EstoqueFirebaseService _estoqueService = EstoqueFirebaseService();
   final ProductFirebaseService _productService = ProductFirebaseService();
+  final _isLeitor = UserService().currentUser!.isLeitor;
   
   String _searchQuery = "";
   Map<String, String> _productNames = {};
@@ -49,10 +52,25 @@ class _EstoquePage1State extends State<EstoquePage1> {
   }
 
   void _atualizarQuantidade(String estoqueId, int novaQuantidade) {
-    setState(() {
+    
+    
       _quantidadesAjustadas[estoqueId] = novaQuantidade; // Atualiza a quantidade ajustada
+   
+    _estoqueService.getQuantidade(estoqueId).then((quantidadeAtual) {
+      if (novaQuantidade > quantidadeAtual) {
+        showDialog(
+          context: context,
+          builder: (context) => MensagemErro(
+            mensagem: "Quantidade maior do que o limite máximo disponível no estoque.",
+            limiteDisponivel: quantidadeAtual as int,
+          ),
+        );
+      setState(() {
+        _quantidadesAjustadas.clear();
+      });
+      }
     });
-  }
+ }
 
   Future<void> salvarBaixas() async {
   final user = FirebaseAuth.instance.currentUser;
@@ -69,13 +87,15 @@ class _EstoquePage1State extends State<EstoquePage1> {
     );
     return;
   }
-
+  
   try {
     for (var entry in _quantidadesAjustadas.entries) {
       final estoqueId = entry.key;
       final quantidade = entry.value;
 
-      if (quantidade > 0) { // Só registrar se a quantidade for maior que 0
+      if (quantidade > 0) {
+        
+        // Só registrar se a quantidade for maior que 0
         final baixa = Baixa(
           idBaixa: FirebaseFirestore.instance.collection('baixas').doc().id, // Gerando um novo ID
           idEstoque: estoqueId,
@@ -84,7 +104,9 @@ class _EstoquePage1State extends State<EstoquePage1> {
           idUsuario: user.uid,
         );
 
-        await baixa.registrarBaixa();
+        await baixa.registrarBaixa(context);
+
+      
       }
     }
 
@@ -92,12 +114,16 @@ class _EstoquePage1State extends State<EstoquePage1> {
       _quantidadesAjustadas.clear(); // Limpa as baixas registradas
     });
 
+    
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Baixas salvas com sucesso!')),
     );
   } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Erro ao salvar baixas: $e')),
+    setState(() {
+      _quantidadesAjustadas.clear(); // Limpa as baixas registradas
+    });
+     ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Erro ao salvar baixas. ')),
     );
   }
 }
@@ -162,7 +188,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
 
                 return SingleChildScrollView(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.7,
+                    height: MediaQuery.of(context).size.height * 0.7715,
                     child: ListView.builder(
                       padding: const EdgeInsets.only(bottom: 70),
                       itemCount: estoquesFiltrados.length,
@@ -182,9 +208,11 @@ class _EstoquePage1State extends State<EstoquePage1> {
               },
             ),
           ),
-          NewEstoqueButtton(onPressed:salvarBaixas),
+         // NewEstoqueButtton(onPressed:salvarBaixas),
         ],
       ),
+    floatingActionButton: _isLeitor ? null : NewEstoqueButtton(onPressed: salvarBaixas),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

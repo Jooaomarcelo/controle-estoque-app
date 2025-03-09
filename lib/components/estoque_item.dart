@@ -140,7 +140,7 @@ class _EstoqueItemState extends State<EstoqueItem> {
                         print(quantidadeBaixa);
                       });
                     widget.onQuantidadeAlterada(widget.estoque.id, quantidadeBaixa);
-
+                  
                     },
                     child: SvgPicture.asset(
                       'assets/images/icone1.svg',
