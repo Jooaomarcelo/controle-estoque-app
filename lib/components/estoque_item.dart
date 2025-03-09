@@ -1,5 +1,7 @@
 import 'package:controle_estoque_app/core/models/estoque.dart';
+import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -26,7 +28,7 @@ class EstoqueItem extends StatefulWidget {
 
 class _EstoqueItemState extends State<EstoqueItem> {
   late int quantidadeBaixa;
-
+  final currentUser = UserService().currentUser;
   @override
   bool get wantKeepAlive => true;
 
@@ -90,11 +92,16 @@ class _EstoqueItemState extends State<EstoqueItem> {
         ),
       ),
       child: InkWell(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (ctx) => AdicionarEstoquePage(estoque: widget.estoque),
-          ),
-        ),
+        
+        onTap: () {
+        if (!currentUser!.isLeitor) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => AdicionarEstoquePage(estoque: widget.estoque),
+            ),
+          ); 
+        }
+        },
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(
@@ -129,7 +136,8 @@ class _EstoqueItemState extends State<EstoqueItem> {
                 ),
               ),
               const SizedBox(width: 40),
-              Row(
+              if (!currentUser!.isLeitor) 
+                Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
@@ -182,6 +190,7 @@ class _EstoqueItemState extends State<EstoqueItem> {
                   ),
                 ],
               ),
+  
             ],
           ),
         ),
