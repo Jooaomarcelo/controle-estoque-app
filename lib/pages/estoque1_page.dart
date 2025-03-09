@@ -212,7 +212,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
         ],
       ),
     floatingActionButton: _isLeitor ? null : NewEstoqueButtton(onPressed: salvarBaixas),
-    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
