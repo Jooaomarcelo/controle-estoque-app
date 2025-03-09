@@ -53,9 +53,9 @@ class _EstoquePage1State extends State<EstoquePage1> {
 
   void _atualizarQuantidade(String estoqueId, int novaQuantidade) {
     
-    setState(() {
+    
       _quantidadesAjustadas[estoqueId] = novaQuantidade; // Atualiza a quantidade ajustada
-    });
+   
     _estoqueService.getQuantidade(estoqueId).then((quantidadeAtual) {
       if (novaQuantidade > quantidadeAtual) {
         showDialog(
