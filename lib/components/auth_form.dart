@@ -1,4 +1,5 @@
 import 'package:controle_estoque_app/core/models/auth_form_data.dart';
+import 'package:controle_estoque_app/pages/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
@@ -194,7 +195,11 @@ class _AuthFormState extends State<AuthForm> {
             ),
             if (widget.isLogin)
               TextButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => const ForgotPasswordPage(),
+                  ),
+                ),
                 child: const Text(
                   'Esqueceu a senha?',
                   style: TextStyle(
