@@ -6,6 +6,7 @@ import 'package:controle_estoque_app/core/services/product/product_firebase_serv
 import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:controle_estoque_app/core/models/estoque.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 class AdicionarEstoquePage extends StatefulWidget {
@@ -123,291 +124,310 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
       //),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Form(
-                key: _formKey,
-                child: SizedBox(
-                  width: 283,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 140,),
-                      
-
-                      Text(
-                        'Produto',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Poppins',
-                        ),
-                      ),
-
-                      // Carregamento dos produtos com indicador de progresso
-                      if (_isLoading)
-                        Center(child: CircularProgressIndicator())
-                      else
-                        DropdownButtonFormField<String>(
-                          value: _produtoSelecionado,
-                          onChanged: (value) {
-                            setState(() {
-                              _produtoSelecionado = value;
-                            });
-                          },
-                          items: _produtos.map((produto) {
-                            return DropdownMenuItem(
-                              value: produto.id,
-                              child: Text(produto.name),
-                            );
-                          }).toList(),
-                          validator: (value) =>
-                              value == null ? "Selecione um produto" : null,
-                          decoration: InputDecoration(
-                            labelText: 'Selecione um Produto ',
-                            labelStyle: Theme.of(context).textTheme.bodySmall,
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color: Theme.of(context).colorScheme.primary),
+          child: Stack(
+            children:[ Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child:  Form(
+                    key: _formKey,
+                    child: SizedBox(
+                      width: 283,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 140,),
+                          
+                  
+                          Text(
+                            'Produto',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Poppins',
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 3,
-                                  color: Theme.of(context).colorScheme.primary),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 15),
                           ),
-                        ),
-
-                      SizedBox(height: 15),
-
-                      Text(
-                        'Lote',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Poppins',
-                        ),
-                      ),
-
-                      SizedBox(height: 5),
-                      // Lote
-                      TextFormField(
-                        controller: _loteController,
-                        keyboardType: TextInputType.number,
-                        validator: (value) =>
-                            value!.isEmpty ? "Campo obrigatório" : null,
-                        decoration: InputDecoration(
-                          labelText: 'Informe o lote ',
-                          labelStyle: Theme.of(context).textTheme.bodySmall,
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                                width: 2,
-                                color: Theme.of(context).colorScheme.primary),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 3,
-                                color: Theme.of(context).colorScheme.primary),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
-                        ),
-                      ),
-
-                      SizedBox(height: 15),
-
-                      Text(
-                        'Quantidade',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Poppins',
-                        ),
-                      ),
-
-                      SizedBox(height: 5),
-                      // Quantidade
-                      TextFormField(
-                        controller: _quantidadeController,
-                        keyboardType: TextInputType.number,
-                        validator: (value) => value!.isEmpty ||
-                                int.tryParse(value) == null ||
-                                int.parse(value) <= 0
-                            ? "Quantidade inválida"
-                            : null,
-                        decoration: InputDecoration(
-                          labelText: 'Informe a quantidade ',
-                          labelStyle: Theme.of(context).textTheme.bodySmall,
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                                width: 2,
-                                color: Theme.of(context).colorScheme.primary),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 3,
-                                color: Theme.of(context).colorScheme.primary),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
-                        ),
-                      ),
-
-                      SizedBox(height: 15),
-
-                      Text(
-                        'Data de Validade',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Poppins',
-                        ),
-                      ),
-
-                      SizedBox(height: 5),
-                      // Data de Validade com DatePicker
-                      TextFormField(
-                        controller: _dataValidadeController,
-                        readOnly: true,
-                        onTap: _selectDataValidade,
-                        validator: (value) =>
-                            value!.isEmpty ? "Campo obrigatório" : null,
-                        decoration: InputDecoration(
-                          labelText: 'Informe a data',
-                          labelStyle: Theme.of(context).textTheme.bodySmall,
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                                width: 2,
-                                color: Theme.of(context).colorScheme.primary),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 3,
-                                color: Theme.of(context).colorScheme.primary),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
-                        ),
-                      ),
-
-                      SizedBox(height: 15),
-
-                      SizedBox(height: 15),
-                      // colocar o If pra edicao
-                      if (widget.estoque != null)
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .center, // Alinha os itens à esquerda
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Editado por ',
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: 'Poppins',
-                                  ),
+                  
+                          // Carregamento dos produtos com indicador de progresso
+                          if (_isLoading)
+                            Center(child: CircularProgressIndicator())
+                          else
+                            DropdownButtonFormField<String>(
+                              value: _produtoSelecionado,
+                              onChanged: (value) {
+                                setState(() {
+                                  _produtoSelecionado = value;
+                                });
+                              },
+                              items: _produtos.map((produto) {
+                                return DropdownMenuItem(
+                                  value: produto.id,
+                                  child: Text(produto.name),
+                                );
+                              }).toList(),
+                              validator: (value) =>
+                                  value == null ? "Selecione um produto" : null,
+                              decoration: InputDecoration(
+                                labelText: 'Selecione um Produto ',
+                                labelStyle: Theme.of(context).textTheme.bodySmall,
+                                floatingLabelBehavior: FloatingLabelBehavior.never,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: Theme.of(context).colorScheme.primary),
                                 ),
-                                Text(
-                                  widget.estoque!.emailUsuarioEditou,
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface, // Usa cor visível
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Poppins',
-                                  ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 3,
+                                      color: Theme.of(context).colorScheme.primary),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 15),
+                              ),
+                            ),
+                  
+                          SizedBox(height: 15),
+                  
+                          Text(
+                            'Lote',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                  
+                          SizedBox(height: 5),
+                          // Lote
+                          TextFormField(
+                            controller: _loteController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) =>
+                                value!.isEmpty ? "Campo obrigatório" : null,
+                            decoration: InputDecoration(
+                              labelText: 'Informe o lote ',
+                              labelStyle: Theme.of(context).textTheme.bodySmall,
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(
+                                    width: 2,
+                                    color: Theme.of(context).colorScheme.primary),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).colorScheme.primary),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                            ),
+                          ),
+                  
+                          SizedBox(height: 15),
+                  
+                          Text(
+                            'Quantidade',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                  
+                          SizedBox(height: 5),
+                          // Quantidade
+                          TextFormField(
+                            controller: _quantidadeController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) => value!.isEmpty ||
+                                    int.tryParse(value) == null ||
+                                    int.parse(value) <= 0
+                                ? "Quantidade inválida"
+                                : null,
+                            decoration: InputDecoration(
+                              labelText: 'Informe a quantidade ',
+                              labelStyle: Theme.of(context).textTheme.bodySmall,
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(
+                                    width: 2,
+                                    color: Theme.of(context).colorScheme.primary),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).colorScheme.primary),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                            ),
+                          ),
+                  
+                          SizedBox(height: 15),
+                  
+                          Text(
+                            'Data de Validade',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                  
+                          SizedBox(height: 5),
+                          // Data de Validade com DatePicker
+                          TextFormField(
+                            controller: _dataValidadeController,
+                            readOnly: true,
+                            onTap: _selectDataValidade,
+                            validator: (value) =>
+                                value!.isEmpty ? "Campo obrigatório" : null,
+                            decoration: InputDecoration(
+                              labelText: 'Informe a data',
+                              labelStyle: Theme.of(context).textTheme.bodySmall,
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(
+                                    width: 2,
+                                    color: Theme.of(context).colorScheme.primary),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).colorScheme.primary),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                            ),
+                          ),
+                  
+                          SizedBox(height: 15),
+                  
+                          SizedBox(height: 15),
+                          // colocar o If pra edicao
+                          if (widget.estoque != null)
+                            Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Alinha os itens à esquerda
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Editado por ',
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).colorScheme.primary,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Poppins',
+                                      ),
+                                    ),
+                                    Text(
+                                      widget.estoque!.emailUsuarioEditou,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface, // Usa cor visível
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'Poppins',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                    height: 8), // Espaço entre os elementos
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Data: ',
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).colorScheme.primary,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Poppins',
+                                      ),
+                                    ),
+                                    Text(
+                                      widget.estoque?.dataUltimaEdicao != null
+                                          ? DateFormat('dd/MM/yyyy').format(
+                                              widget.estoque!.dataUltimaEdicao)
+                                          : 'Data não disponível',
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface, // Usa cor visível
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'Poppins',
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                            const SizedBox(
-                                height: 8), // Espaço entre os elementos
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Data: ',
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: 'Poppins',
-                                  ),
+                  
+                          SizedBox(height: 50),
+                          SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor: Colors.white,
                                 ),
-                                Text(
-                                  widget.estoque?.dataUltimaEdicao != null
-                                      ? DateFormat('dd/MM/yyyy').format(
-                                          widget.estoque!.dataUltimaEdicao)
-                                      : 'Data não disponível',
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface, // Usa cor visível
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Poppins',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-
-                      SizedBox(height: 50),
-                      SizedBox(
-                        height: 50,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              foregroundColor: Colors.white,
-                            ),
-                            onPressed: _salvarEstoque,
-                            child: Text(
-                                widget.estoque == null
-                                    ? "Cadastrar no Estoque"
-                                    : "Confirmar",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: 'Poppins',
-                                ))),
-                      )
-                    ],
+                                onPressed: _salvarEstoque,
+                                child: Text(
+                                    widget.estoque == null
+                                        ? "Cadastrar no Estoque"
+                                        : "Confirmar",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'Poppins',
+                                    ))),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                  
+                 
               ),
             ),
+            Positioned(
+                top: 10,
+                left: 10,
+                child: IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/images/Seta.svg',
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.primary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+            ]
           ),
         ),
       ),
