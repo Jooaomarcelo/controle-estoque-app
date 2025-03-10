@@ -95,11 +95,10 @@ class _AuthPageState extends State<AuthPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+          icon: SvgPicture.asset(
+            'assets/images/Seta.svg',
           ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         centerTitle: true,
         title: SvgPicture.asset(

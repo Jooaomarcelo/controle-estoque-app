@@ -49,26 +49,27 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height - kToolbarHeight,
-            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  child: IconButton(
-                    icon: SvgPicture.asset(
-                      'assets/images/Seta.svg',
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).colorScheme.primary,
-                        BlendMode.srcIn,
-                      ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 40,
+                left: 10,
+                child: IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/images/Seta.svg',
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.primary,
+                      BlendMode.srcIn,
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
                   ),
+                  onPressed: () => Navigator.of(context).pop(),
                 ),
-                Column(
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height - kToolbarHeight,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SvgPicture.asset('assets/images/forgot-password.svg'),
@@ -180,8 +181,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
