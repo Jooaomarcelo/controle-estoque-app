@@ -23,7 +23,6 @@ class NewEstoqueButtton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        
         children: [
           // Espaço superior
           SizedBox(height: 10),
@@ -84,10 +83,9 @@ class NewEstoqueButtton extends StatelessWidget {
               width: 280,
               height: 48,
               child: ElevatedButton(
-                
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                     side: BorderSide(
@@ -110,8 +108,8 @@ class NewEstoqueButtton extends StatelessWidget {
             ),
           ),
           // Espaço inferior
-          
-          SizedBox(height:10),
+
+          SizedBox(height: 10),
         ],
       ),
     );
