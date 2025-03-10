@@ -73,7 +73,7 @@ class _UserPageState extends State<UserPage> {
 
     final pickedImage = await picker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 50,
+      imageQuality: 100,
       maxWidth: 150,
     );
 
@@ -169,21 +169,25 @@ class _UserPageState extends State<UserPage> {
                     child: Container(
                       width: 200,
                       height: 200,
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
+                      padding: _currentUser!.imageUrl.isEmpty
+                          ? EdgeInsets.all(20)
+                          : null,
+                      decoration: _currentUser.imageUrl.isEmpty
+                          ? BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(25),
+                            )
+                          : null,
                       child: _isLoading
                           ? const CircularProgressIndicator(
                               color: Colors.white,
                             )
-                          : _showUserImage(_currentUser!.imageUrl),
+                          : _showUserImage(_currentUser.imageUrl),
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    _currentUser!.name,
+                    _currentUser.name,
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Colors.black,
                         ),
