@@ -7,7 +7,6 @@ import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class AdicionarEstoquePage extends StatefulWidget {
   final Estoque? estoque; // Estoque para edição (opcional)
@@ -25,7 +24,7 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
   final TextEditingController _loteController = TextEditingController();
   final TextEditingController _quantidadeController = TextEditingController();
   final TextEditingController _dataValidadeController = TextEditingController();
-  File? _imagemSelecionada;
+  File? _imagemSelecionada; 
 
   List<Product> _produtos = [];
   String? _produtoSelecionado; // ID do produto selecionado
@@ -135,19 +134,8 @@ class _AdicionarEstoquePageState extends State<AdicionarEstoquePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ImagePickerWidget(
-                        image: _imagemSelecionada == null
-                            ? ''
-                            : _imagemSelecionada!.path,
-                        onImagePicked: (image) {
-                          setState(() {
-                            _imagemSelecionada = image;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
+                      SizedBox(height: 140,),
+                      
 
                       Text(
                         'Produto',

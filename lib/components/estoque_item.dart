@@ -1,7 +1,6 @@
 import 'package:controle_estoque_app/core/models/estoque.dart';
 import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:controle_estoque_app/pages/adicionar_estoque_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +10,7 @@ class EstoqueItem extends StatefulWidget {
   final Estoque estoque;
   final String nomeProduto;
   final int initialQuantidade;
+  final String imagemProduto;
   final Function(String,int) onQuantidadeAlterada;
 
 
@@ -20,6 +20,7 @@ class EstoqueItem extends StatefulWidget {
     required this.nomeProduto,
     required this.initialQuantidade,
     required this.onQuantidadeAlterada,
+    required this.imagemProduto,
     }); 
 
   @override
@@ -111,12 +112,26 @@ class _EstoqueItemState extends State<EstoqueItem> {
               Container(
                 width: 60,
                 height: 60,
-                padding: const EdgeInsets.all(7),
+                padding: const EdgeInsets.all(0),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Image.asset('assets/images/default-light.png'),
+               child: widget.imagemProduto.isNotEmpty
+                    ? ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                          widget.imagemProduto,
+                          fit: BoxFit.cover,
+                          width: 60,
+                          height: 60,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset('assets/images/default-light.png');
+                          },
+                        ),
+                    )
+                    : Image.asset('assets/images/default-light.png'),
+              
               ),
               const SizedBox(width: 20),
               Expanded(

@@ -5,10 +5,10 @@ class MensagemErro extends StatelessWidget {
   final int limiteDisponivel;
 
   const MensagemErro({
-    Key? key,
+    super.key,
     required this.mensagem,
     required this.limiteDisponivel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class MensagemErro extends StatelessWidget {
           width: 4),
         borderRadius: BorderRadius.circular(30)),
       
-      child: Container(
+      child: SizedBox(
        
         width: 375,
         height: 200,

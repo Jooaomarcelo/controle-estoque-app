@@ -30,12 +30,14 @@ class _EstoquePage1State extends State<EstoquePage1> {
   
   String _searchQuery = "";
   Map<String, String> _productNames = {};
+  Map<String, String> _productImages = {};
   final Map<String, int> _quantidadesAjustadas = {}; // Para armazenar as quantidades ajustadas
 
   @override
   void initState() {
     super.initState();
     _loadProductNames();
+    _loadProductImages();
   }
 
   Future<void> _loadProductNames() async {
@@ -44,6 +46,13 @@ class _EstoquePage1State extends State<EstoquePage1> {
       _productNames = {for (var p in produtos) p.id: p.name};
     });
   }
+
+  Future<void> _loadProductImages() async {
+  final produtos = await _productService.buscarProdutos();
+  setState(() {
+    _productImages = {for (var p in produtos) p.id: p.image!};
+  });
+}
 
   void _updateSearch(String query) {
     setState(() {
@@ -195,6 +204,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
                       itemBuilder: (context, index) {
                         final estoque = estoquesFiltrados[index];
                         return EstoqueItem(
+                          imagemProduto: _productImages[estoque.idProduto] ?? '',
                           key: ValueKey(estoque.id),
                           estoque: estoque,
                           nomeProduto: _productNames[estoque.idProduto] ?? 'Produto desconhecido',
@@ -208,7 +218,7 @@ class _EstoquePage1State extends State<EstoquePage1> {
               },
             ),
           ),
-         // NewEstoqueButtton(onPressed:salvarBaixas),
+         
         ],
       ),
     floatingActionButton: _isLeitor ? null : NewEstoqueButtton(onPressed: salvarBaixas),

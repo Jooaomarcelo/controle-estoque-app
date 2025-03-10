@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:controle_estoque_app/components/mensagem_erro_baixa.dart';
 import 'package:flutter/material.dart';
 
 class Baixa {
