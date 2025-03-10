@@ -58,6 +58,7 @@ flutter:
     - assets/images/iconeProdutos.png
     - assets/images/perfil.png
     - assets/images/iconeSair.png
+    - assets/images/forgot-password.svg
   fonts:
     - family: Poppins
       fonts:
