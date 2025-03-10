@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:controle_estoque_app/core/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -12,6 +13,7 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   bool _isLoading = false;
+  bool _isValid = true;
   Timer? _timer;
   int _secondsRemaining = 0;
   String _email = '';
@@ -19,11 +21,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Future<void> _submit() async {
     if (_timer != null) return;
 
+    setState(() =>
+        _isValid = _email.trim().contains('@') && _email.trim().isNotEmpty);
+
+    if (!_isValid) return;
+
     try {
       setState(() {
         _isLoading = true;
 
-        _secondsRemaining = 5;
+        _secondsRemaining = 30;
 
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
           if (_secondsRemaining == 0) {
@@ -36,7 +43,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         });
       });
 
-      // await UserService().forgotPassword(_email);
+      await UserService().forgotPassword(_email);
     } catch (error) {
       debugPrint('$error');
     } finally {
@@ -82,7 +89,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         const SizedBox(height: 15),
                         Text(
                           _timer != null
-                              ? 'Código enviado! Espere $_secondsRemaining segundos para enviar de novo.'
+                              ? 'Código enviado! Espere $_secondsRemaining segundos para enviar novamente.'
                               : 'Sem preocupações! Informe seu e-mail e enviaremos um link para você criar uma nova senha.',
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
@@ -116,6 +123,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       onChanged: (email) => _email = email,
                       onSubmitted: (_) => _submit(),
                     ),
+                    if (!_isValid)
+                      Text(
+                        'E-mail inválido!',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.red),
+                      ),
                     SizedBox(
                       width: double.infinity,
                       height: 50,

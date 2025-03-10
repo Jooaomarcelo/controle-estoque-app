@@ -116,6 +116,10 @@ class UserService with ChangeNotifier {
     await FirebaseAuth.instance.signOut();
   }
 
+  Future<void> forgotPassword(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
   /*-------------- Funções auxiliares do usuário --------------*/
 
   Future<void> _saveUserInDatabase(UserData user) async {
